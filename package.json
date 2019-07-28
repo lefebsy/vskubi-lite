@@ -1,0 +1,112 @@
+{
+	"name": "vskubi-lite",
+	"displayName": "Kubi-lite",
+	"description": "Kubernetes CA-GIP/Kubi CLI, Lite wrapper version compatible with VSCode and Theia IDE",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.36.0"
+	},
+	"license": "MIT",
+	"publisher": "lefebsy",
+	"bugs": {
+		"url": "https://github.com/lefebsy/vskubi-lite/issues"
+	},
+	"homepage": "https://raw.githubusercontent.com/lefebsy/vskubi-lite/master/README.md",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/lefebsy/vskubi-lite.git"
+	},
+	"categories": [
+		"Other"
+	],
+	"keywords": [
+		"Kubernetes",
+		"k8s",
+		"Kubi",
+		"Kubi-lite",
+		"Theia"
+	],
+	"activationEvents": [
+		"*",
+		"onCommand:extension.vskubi-lite"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"category": "Kubi",
+				"command": "extension.vskubi-lite",
+				"title": "Generate Kubeconfig with Kubi"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "extension.vskubi-lite",
+				"key": "ctrl+k ctrl+i",
+				"mac": "cmd+k cmd+i"
+			}
+		],
+		"configuration": {
+			"title": "Kubi-lite",
+			"properties": {
+				"Kubi.path": {
+					"type": "string",
+					"scope": "resource",
+					"default": "kubi",
+					"description": "Kubi exe path"
+				},
+				"Kubi.endpoint": {
+					"type": "string",
+					"scope": "resource",
+					"default": "https://kubi.cluster1.example.com",
+					"description": "Default kubi endpoint, ex. : https://kubi.cluster1.example.com"
+				},
+				"Kubi.login": {
+					"type": "string",
+					"scope": "resource",
+					"default": "",
+					"description": "Default login, ex. : me@abc.com"
+				}
+			}
+		},
+		"menus": {
+			"view/item/context": [
+				{
+					"command": "extension.vskubi-lite",
+					"when": "view == extension.vsKubernetesExplorer && viewItem =~ /^vsKubernetes\\.\\w*cluster.*$/i",
+					"group": "4"
+				}
+			],
+			"view/title": [
+				{
+					"command": "extension.vskubi-lite",
+					"when": "view == extension.vsKubernetesExplorer",
+					"group": "2"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"clean": "rm -rf ./out",
+		"vscode:prepublish": "webpack --mode production",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile",
+		"package": "vsce package"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.1.1",
+		"@types/mocha": "^5.2.6",
+		"@types/node": "^10.12.21",
+		"@types/vscode": "^1.36.0",
+		"glob": "^7.1.4",
+		"mocha": "^6.1.4",
+		"ts-loader": "^6.0.4",
+		"tslint": "^5.12.1",
+		"typescript": "^3.3.1",
+		"vsce": "^1.66.0",
+		"vscode-test": "^1.0.2",
+		"webpack": "^4.38.0",
+		"webpack-cli": "^3.3.6"
+	}
+}
