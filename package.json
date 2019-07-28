@@ -8,6 +8,7 @@
 	},
 	"license": "MIT",
 	"publisher": "lefebsy",
+	"icon": "resources/logo/logo-128x128.png",
 	"bugs": {
 		"url": "https://github.com/lefebsy/vskubi-lite/issues"
 	},
