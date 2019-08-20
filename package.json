@@ -2,7 +2,7 @@
 	"name": "vskubi-lite",
 	"displayName": "Kubi-lite",
 	"description": "Kubernetes CA-GIP/Kubi CLI, Lite wrapper version compatible with VSCode and Theia IDE",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"engines": {
 		"vscode": "^1.36.0"
 	},
@@ -60,13 +60,31 @@
 					"type": "string",
 					"scope": "resource",
 					"default": "https://kubi.cluster1.example.com",
-					"description": "Default kubi endpoint, ex. : https://kubi.cluster1.example.com"
+					"description": "Default kubi server endpoint, ex. : https://kubi.cluster1.example.com"
 				},
 				"Kubi.login": {
 					"type": "string",
 					"scope": "resource",
 					"default": "",
 					"description": "Default login, ex. : me@abc.com"
+				},
+				"Kubi.action": {
+					"type": "string",
+					"default": "generate-config",
+					"enum": [
+						"generate-config",
+						"generate-token"
+					],
+					"enumDescriptions": [
+						"Generate a config in ~/.kube/config",
+						"Generate a token only"
+					]
+				},
+				"Kubi.extra": {
+					"type": "string",
+					"scope": "resource",
+					"default": "",
+					"description": "Custom string to play with parameters like '--use-proxy' or '--insecure'"
 				}
 			}
 		},
