@@ -31,10 +31,6 @@ export function activate(context: vscode.ExtensionContext) {
                 if (err) {
                     console.error(err);
                     vscode.window.showErrorMessage(`${kubiLogin} : ${stdout}`);
-                    if (kubiAction === "generate-token") {
-                        kubiOutputChannel.appendLine("Generated token :");
-                        kubiOutputChannel.appendLine(stdout);
-                    }
                     return;
                 }
                 if (stdout) {
