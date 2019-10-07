@@ -2,7 +2,7 @@
 	"name": "vskubi-lite",
 	"displayName": "Kubi-lite",
 	"description": "Kubernetes CA-GIP/Kubi CLI, Lite wrapper version compatible with VSCode and Theia IDE",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"engines": {
 		"vscode": "^1.36.0"
 	},
