@@ -24,7 +24,7 @@ export function activate(context: vscode.ExtensionContext) {
             }
 
             // building command
-            let kubiCommand = `${kubiPath} ${kubiExtra} --username ${kubiLogin} --password ${kubiPwd} --kubi-url ${kubiEndpoint} --${kubiAction}`;
+            let kubiCommand = `${kubiPath} --username ${kubiLogin} --password ${kubiPwd} --kubi-url ${kubiEndpoint} --${kubiAction} ${kubiExtra}`;
 
             //spawning child processus
             child_process.exec(kubiCommand, (err, stdout) => {
