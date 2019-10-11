@@ -2,6 +2,9 @@
 
 All notable changes to the "vskubi-lite" extension will be documented in this file.
 
+## 0.0.3
+- Sonar and Travis integration for better quality
+
 ## 0.0.2
 - Some fixes and new option to use the token generation
 
