@@ -1,8 +1,8 @@
 {
 	"name": "vskubi-lite",
+	"version": "0.0.4",
 	"displayName": "Kubi-lite",
 	"description": "Kubernetes CA-GIP/Kubi CLI, Lite wrapper version compatible with VSCode and Theia IDE",
-	"version": "0.0.4",
 	"engines": {
 		"vscode": "^1.36.0"
 	},
@@ -111,7 +111,8 @@
 		"compile": "tsc -p ./",
 		"watch": "tsc -watch -p ./",
 		"pretest": "npm run compile",
-		"package": "vsce package"
+		"package": "npm run sonar && vsce package",
+		"sonar": "sh updateSonarProps.sh"
 	},
 	"devDependencies": {
 		"@types/glob": "^7.1.1",
