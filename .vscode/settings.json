@@ -10,6 +10,7 @@
     "typescript.tsc.autoDetect": "off",
     "workbench.colorCustomizations": {
         "activityBar.background": "#51caf7",
+        "activityBar.activeBorder": "#f40bb5",
         "activityBar.foreground": "#15202b",
         "activityBar.inactiveForeground": "#15202b99",
         "activityBarBadge.background": "#f40bb5",

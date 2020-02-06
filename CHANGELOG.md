@@ -2,8 +2,11 @@
 
 All notable changes to the "vskubi-lite" extension will be documented in this file.
 
+## 0.0.5
+- Fix CVE-2019-16769 on dev dependency
+
 ## 0.0.4
-- Fix extra arguments 
+- Fix extra arguments
 
 ## 0.0.3
 - Sonar and Travis integration for better quality
