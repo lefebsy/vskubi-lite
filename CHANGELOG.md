@@ -2,6 +2,11 @@
 
 All notable changes to the "vskubi-lite" extension will be documented in this file.
 
+## 0.1.0
+- New features :
+    - Display a list of kubi endpoints to easily switch between clusters `[Ctrl+K Ctrl+d]`
+    - Add token in `clipboard` when using `generate-token` action
+
 ## 0.0.5
 - Fix CVE-2019-16769 on dev dependency
 

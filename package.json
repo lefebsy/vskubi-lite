@@ -1,6 +1,6 @@
 {
 	"name": "vskubi-lite",
-	"version": "0.0.5",
+	"version": "0.1.0",
 	"displayName": "Kubi-lite",
 	"description": "Kubernetes CA-GIP/Kubi CLI, Lite wrapper version compatible with VSCode and Theia IDE",
 	"engines": {
@@ -42,9 +42,14 @@
 		],
 		"keybindings": [
 			{
-				"command": "extension.vskubi-lite",
+				"command": "extension.vskubi-identity",
 				"key": "ctrl+k ctrl+i",
 				"mac": "cmd+k cmd+i"
+			},
+			{
+				"command": "extension.vskubi-default-switch",
+				"key": "ctrl+k ctrl+d",
+				"mac": "cmd+k cmd+d"
 			}
 		],
 		"configuration": {
@@ -56,11 +61,17 @@
 					"default": "kubi",
 					"description": "Kubi exe path"
 				},
-				"Kubi.endpoint": {
+				"Kubi.endpoint-default": {
 					"type": "string",
 					"scope": "resource",
 					"default": "https://kubi.cluster1.example.com",
-					"description": "Default kubi server endpoint, ex. : https://kubi.cluster1.example.com"
+					"description": "[ctrl+k ctrl+i] - Default kubi server endpoint, ex. : https://kubi.cluster1.example.com"
+				},
+				"Kubi.endpoint-list": {
+					"type": "string",
+					"scope": "resource",
+					"default": "",
+					"description": "[ctrl+k ctrl+d] - Optional - List of available endpoints (i.e. dev, prod...), comma separated, ex. : 'https://kubi.cluster2.example.com,https://kubi.cluster2.example.com'"
 				},
 				"Kubi.login": {
 					"type": "string",
@@ -77,7 +88,7 @@
 					],
 					"enumDescriptions": [
 						"Generate a config in ~/.kube/config",
-						"Generate a token only"
+						"Generate a token only & copy in clipboard"
 					]
 				},
 				"Kubi.extra": {

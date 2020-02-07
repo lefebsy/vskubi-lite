@@ -17,5 +17,6 @@
         "activityBarBadge.foreground": "#e7e7e7"
     },
 "typescript.tsdk": "node_modules/typescript/lib",
-"peacock.color": "#20bbf5"
+"peacock.color": "#20bbf5",
+"Kubi.endpoint-default": "https://kubi.cluster3.example.com"
 }
