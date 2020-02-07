@@ -1,6 +1,6 @@
 {
 	"name": "vskubi-lite",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"displayName": "Kubi-lite",
 	"description": "Kubernetes CA-GIP/Kubi CLI, Lite wrapper version compatible with VSCode and Theia IDE",
 	"engines": {
@@ -29,16 +29,22 @@
 	],
 	"activationEvents": [
 		"*",
-		"onCommand:extension.vskubi-lite"
+		"onCommand:extension.vskubi-identity"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
 				"category": "Kubi",
-				"command": "extension.vskubi-lite",
-				"title": "Generate Kubeconfig with Kubi"
+				"command": "extension.vskubi-identity",
+				"title": "Execute default kubi action (kubeConfig or token)"
+			},
+			{
+				"category": "Kubi",
+				"command": "extension.vskubi-default-switch",
+				"title": "Select default kubi endpoint from your clusters list"
 			}
+
 		],
 		"keybindings": [
 			{
@@ -82,6 +88,7 @@
 				"Kubi.action": {
 					"type": "string",
 					"default": "generate-config",
+					"description": "Select kubi default action : kubeConfig or Token",
 					"enum": [
 						"generate-config",
 						"generate-token"
@@ -102,14 +109,14 @@
 		"menus": {
 			"view/item/context": [
 				{
-					"command": "extension.vskubi-lite",
+					"command": "extension.vskubi-identity",
 					"when": "view == extension.vsKubernetesExplorer && viewItem =~ /^vsKubernetes\\.\\w*cluster.*$/i",
 					"group": "4"
 				}
 			],
 			"view/title": [
 				{
-					"command": "extension.vskubi-lite",
+					"command": "extension.vskubi-identity",
 					"when": "view == extension.vsKubernetesExplorer",
 					"group": "2"
 				}

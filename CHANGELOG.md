@@ -2,6 +2,10 @@
 
 All notable changes to the "vskubi-lite" extension will be documented in this file.
 
+## 0.1.1
+
+- Contextual menu fixes
+
 ## 0.1.0
 
 - New features :
