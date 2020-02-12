@@ -2,6 +2,11 @@
 
 All notable changes to the "vskubi-lite" extension will be documented in this file.
 
+## 0.1.2
+
+- Add a statusBar information
+- Bump VSCode dependency version to be compliant with workspace settings
+
 ## 0.1.1
 
 - Contextual menu fixes
