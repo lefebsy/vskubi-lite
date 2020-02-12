@@ -69,7 +69,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 
 function refreshStatusBar(kubiStatusChannel: vscode.StatusBarItem, endpoint: string) {
-    let shortTxt: string = endpoint.replace(/(.*\/)(\w+)(\.)/,''); // cleaning endpoint by removing scheme and first word from url
+    let shortTxt: string = endpoint.replace(/.*\/\w+\./,''); // cleaning endpoint by removing scheme and first word from url
     kubiStatusChannel.text = shortTxt;
     kubiStatusChannel.tooltip = `Kubi current used endpoint : ${shortTxt}`;
     kubiStatusChannel.show();
