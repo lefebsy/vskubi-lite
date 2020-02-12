@@ -1,6 +1,6 @@
 {
 	"name": "vskubi-lite",
-	"version": "0.1.2",
+	"version": "0.2.0",
 	"displayName": "Kubi-lite",
 	"description": "Kubernetes CA-GIP/Kubi CLI, Lite wrapper version compatible with VSCode and Theia IDE",
 	"engines": {
@@ -41,10 +41,14 @@
 			},
 			{
 				"category": "Kubi",
-				"command": "extension.vskubi-default-switch",
+				"command": "extension.vskubi-default-endpoint-switch",
 				"title": "Select default kubi endpoint from your clusters list"
+			},
+			{
+				"category": "Kubi",
+				"command": "extension.vskubi-default-namespace-switch",
+				"title": "Change default namespace in kubeconfig from your favorite list"
 			}
-
 		],
 		"keybindings": [
 			{
@@ -53,9 +57,14 @@
 				"mac": "cmd+k cmd+i"
 			},
 			{
-				"command": "extension.vskubi-default-switch",
+				"command": "extension.vskubi-default-endpoint-switch",
 				"key": "ctrl+k ctrl+d",
 				"mac": "cmd+k cmd+d"
+			},
+			{
+				"command": "extension.vskubi-default-namespace-switch",
+				"key": "ctrl+k ctrl+n",
+				"mac": "cmd+k cmd+n"
 			}
 		],
 		"configuration": {
@@ -103,6 +112,12 @@
 					"scope": "resource",
 					"default": "",
 					"description": "Custom string to play with parameters like '--use-proxy' or '--insecure'"
+				},
+				"Kubi.favoriteNamespaces": {
+					"type": "string",
+					"scope": "resource",
+					"default": "",
+					"description": "[ctrl+k ctrl+n] - Optional - List of favorites namespaces, comma separated"
 				}
 			}
 		},
@@ -145,6 +160,10 @@
 		"vsce": "^1.73.0",
 		"vscode-test": "^1.0.2",
 		"webpack": "^4.41.5",
-		"webpack-cli": "^3.3.10"
+		"webpack-cli": "^3.3.10",
+		"@kubernetes/client-node": "^0.11.1",
+		"@types/user-home": "^2.0.0",
+		"user-home": "^2.0.0",
+		"js-yaml": "^3.13.1"
 	}
 }
