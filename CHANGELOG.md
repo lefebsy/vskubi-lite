@@ -2,6 +2,10 @@
 
 All notable changes to the "vskubi-lite" extension will be documented in this file.
 
+## 0.2.1
+
+- Fix dependency tree with sonar tips
+
 ## 0.2.0
 
 - New feature :
