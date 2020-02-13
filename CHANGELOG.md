@@ -2,6 +2,11 @@
 
 All notable changes to the "vskubi-lite" extension will be documented in this file.
 
+## 0.3.0
+
+- New shortcut feature :
+  - Changing kubi endpoint `[Ctrl+k Ctrl+d]` launch authentication then refresh Kubernetes 'explorer view'
+
 ## 0.2.1
 
 - Fix dependency tree with sonar tips
@@ -9,7 +14,7 @@ All notable changes to the "vskubi-lite" extension will be documented in this fi
 ## 0.2.0
 
 - New feature :
-  - Display a list of favorite namespaces and easily refresh Kubernetes extention explorer view `[Ctrl+k Ctrl+n]`
+  - Display a list of favorite namespaces and easily refresh Kubernetes extention 'explorer view' `[Ctrl+k Ctrl+n]`
 - Fix RegExp groups complexity to avoid CVE-2017-16021 and CVE-2018-13863
 
 ## 0.1.2

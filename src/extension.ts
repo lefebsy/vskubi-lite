@@ -44,11 +44,15 @@ export function activate(context: vscode.ExtensionContext) {
                     vscode.window.showInformationMessage(stdout);
                     refreshStatusBar(kubiStatusChannel, `${kubiEndpoint}`);
                     if (kubiAction === "generate-token") {
-                        // if no error during authentication stdout is a token, putted in clipboard
+                        // if no error during authentication stdout is a token, putted in clipboard and console channel
                         kubiOutputChannel.appendLine(`Generated token from '${kubiEndpoint}'`);
                         kubiOutputChannel.appendLine('Copied in clipoard :');
                         kubiOutputChannel.appendLine(stdout);
                         vscode.env.clipboard.writeText(stdout);
+                    }
+                    else {
+                        // ask a refresh to extension kubernetes explorer view
+                        vscode.commands.executeCommand('extension.vsKubernetesRefreshExplorer');
                     }
                 }
             });
@@ -63,6 +67,7 @@ export function activate(context: vscode.ExtensionContext) {
             let list = kubiEndpointList.split(',');
             let newValue = await vscode.window.showQuickPick(list, { placeHolder: 'Select the default kubi endpoint' });
             vscode.workspace.getConfiguration('Kubi').update('endpoint-default', newValue);
+            vscode.commands.executeCommand('extension.vskubi-identity'); // ask to launch authentication function
         }
     });
 
@@ -75,7 +80,7 @@ export function activate(context: vscode.ExtensionContext) {
             let newValue = await vscode.window.showQuickPick(list, { placeHolder: 'Select new default namespace' });
             if (newValue) {
                 updateKubeConfigNamespace(newValue);
-                vscode.commands.executeCommand('extension.vsKubernetesRefreshExplorer');
+                vscode.commands.executeCommand('extension.vsKubernetesRefreshExplorer'); // ask a refresh to extension kubernetes explorer view
             }
         }
     });
