@@ -161,7 +161,6 @@
 		"vscode-test": "^1.0.2",
 		"webpack": "^4.41.5",
 		"webpack-cli": "^3.3.10",
-		"@kubernetes/client-node": "^0.11.1",
 		"@types/user-home": "^2.0.0",
 		"user-home": "^2.0.0",
 		"js-yaml": "^3.13.1"
