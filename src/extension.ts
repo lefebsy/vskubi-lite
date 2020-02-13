@@ -98,9 +98,9 @@ function refreshStatusBar(kubiStatusChannel: vscode.StatusBarItem, endpoint: str
 function updateKubeConfigNamespace(ns: string | undefined): Promise<string> {
     return new Promise<string>((resolve, reject) => {
         const config = getDefaultKubeConfigPath();
-        fs.readFile(config, { encoding: 'utf-8' }, (err, data) => {
-            if (err) {
-                reject(err.message);
+        fs.readFile(config, { encoding: 'utf-8' }, (readErr, data) => {
+            if (readErr) {
+                reject(readErr.message);
                 return;
             }
 
@@ -117,9 +117,9 @@ function updateKubeConfigNamespace(ns: string | undefined): Promise<string> {
             myCurrentContext.context.namespace = ns;
 
             // write changes to file
-            fs.writeFile(config, yml.safeDump(doc), (err) => {
-                if (err) {
-                    reject(`couldn't update ${config}: ${err.message}`);
+            fs.writeFile(config, yml.safeDump(doc), (WriteErr) => {
+                if (WriteErr) {
+                    reject(`couldn't update ${config}: ${WriteErr.message}`);
                     return;
                 }
 
