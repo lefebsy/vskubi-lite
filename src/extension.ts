@@ -117,9 +117,9 @@ function updateKubeConfigNamespace(ns: string | undefined): Promise<string> {
             myCurrentContext.context.namespace = ns;
 
             // write changes to file
-            fs.writeFile(config, yml.safeDump(doc), (WriteErr) => {
-                if (WriteErr) {
-                    reject(`couldn't update ${config}: ${WriteErr.message}`);
+            fs.writeFile(config, yml.safeDump(doc), (writeErr) => {
+                if (writeErr) {
+                    reject(`couldn't update ${config}: ${writeErr.message}`);
                     return;
                 }
 
