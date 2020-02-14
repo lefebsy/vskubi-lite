@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import * as child_process from "child_process";
+import * as kube_client from 'kubernetes-client';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as home from 'user-home';
@@ -76,10 +77,12 @@ export function activate(context: vscode.ExtensionContext) {
     let switchDefaultNamespace = vscode.commands.registerCommand('extension.vskubi-default-namespace-switch', async () => {
         const kubiNamespaceList = <string>vscode.workspace.getConfiguration('Kubi').get('favoriteNamespaces');
         if (kubiNamespaceList) {
-            let list = kubiNamespaceList.split(',');
-            let newValue = await vscode.window.showQuickPick(list, { placeHolder: 'Select new default namespace' });
+            let userFavsList = kubiNamespaceList.split(',');
+            let updatedFavsList = await testFavoritesNS(userFavsList);
+            let msgHolder = (updatedFavsList.length === 0) ? 'Sorry no favorite namespace found' : 'Select new default namespace'; 
+            let newValue = await vscode.window.showQuickPick(updatedFavsList, { placeHolder: msgHolder });
             if (newValue) {
-                updateKubeConfigNamespace(newValue);
+                updateKubeConfigNamespace(newValue); //set new default namespace in kubeconfig
                 vscode.commands.executeCommand('extension.vsKubernetesRefreshExplorer'); // ask a refresh to extension kubernetes explorer view
             }
         }
@@ -127,7 +130,6 @@ function updateKubeConfigNamespace(ns: string | undefined): Promise<string> {
                     reject(`couldn't update ${config}: ${writeErr.message}`);
                     return;
                 }
-
                 resolve();
                 return;
             });
@@ -142,6 +144,43 @@ function getDefaultKubeConfigPath(): string {
         return files[0];
     }
     return path.join(home, ".kube", "config");
+}
+
+// test each namespace retrieved from kube api server against user fovorites
+// partial match available : ['sys','pub'] will return ['kube-public','kube-system']
+async function testFavoritesNS(favs: string[]) {
+    // default return array
+    const matchingNamespaces: (string | string[])[] = [];
+
+    // load file kubeConfig and create a kube client
+    const config_path = getDefaultKubeConfigPath();
+    kube_client.config.loadKubeconfig(config_path);
+    const clientApi = kube_client.Client1_13;
+    const clientKube = new clientApi({ version: '1.13' });
+
+    // get namespaces object from Kube api server
+    const nsResponse = await clientKube.api.v1.namespaces.get();
+    
+    // if kube say success, parse body items 'namespaces'
+    if (nsResponse.statusCode === 200) {
+        // only if some namespaces are returned
+        if (nsResponse.body.items.length > 0) {
+            // flatten and reduce response object to names only
+            let namespaces = nsResponse.body.items.flatMap((item: { metadata: { name: string; }; }) => item.metadata.name);
+            namespaces.forEach((ns: string | string[]) => {
+                // compare and store each namespace matching each user favorites, even partially (sys -> kube-system)
+                favs.forEach(fav => {
+                    if (ns.includes(fav)) {
+                        matchingNamespaces.push(ns);
+                    }
+                });
+            });
+            // sort and de-deduplicate results
+            matchingNamespaces.sort();
+            return <string[]>Array.from(new Set(matchingNamespaces));
+        }
+    }
+    return favs;
 }
 
 export function deactivate() { }

@@ -1,6 +1,6 @@
 {
 	"name": "vskubi-lite",
-	"version": "0.3.0",
+	"version": "1.0.0",
 	"displayName": "Kubi-lite",
 	"description": "Kubernetes CA-GIP/Kubi CLI, Lite wrapper version compatible with VSCode and Theia IDE",
 	"engines": {
@@ -117,7 +117,7 @@
 					"type": "string",
 					"scope": "resource",
 					"default": "",
-					"description": "[ctrl+k ctrl+n] - Optional - List of favorites namespaces, comma separated"
+					"description": "[ctrl+k ctrl+n] - Optional - List of your favorites namespaces, comma separated. Example 'sys,pub' will retrieve a sorted matching namespace list like 'kube-public,kube-system'"
 				}
 			}
 		},
@@ -154,8 +154,10 @@
 		"@types/node": "^10.12.21",
 		"@types/user-home": "^2.0.0",
 		"@types/vscode": "^1.41.0",
+		"electron": "^8.0.0",
 		"glob": "^7.1.4",
 		"js-yaml": "3.13.1",
+		"kubernetes-client": "8.3.6",
 		"mocha": "^6.1.4",
 		"ts-loader": "^6.0.4",
 		"tslint": "^5.12.1",

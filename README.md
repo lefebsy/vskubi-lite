@@ -10,7 +10,13 @@ This extension is a GUI wrapper compatible vith __VSCode__ and __Theia IDE__.
 
 1. Download __Kubi CLI__ and add it to your path, or set the absolute path in the __Kubi-lite__ settings
 2. Set preferences in VSCode settings
-3. Use `ctrl+k ctrl+i` to invoke the generation of the KubeConfig in your $home.
+3. Use `ctrl+k ctrl+i` to invoke the generation of the KubeConfig in your `$HOME`.
+
+## Bonus
+
+- Your list of favorite namespaces are checked, autocompleted and sorted from kube server api. Partial matches are available. Your fav list `"sys,pub"` will return `["kube-public","kube-system"]`.
+Then your kubernetes extension 'explorer view' is refreshed :-)
+- Easy switch between a kube cluster or another througth a simple list of kubi endpoint servers...  
 
 ## Visual settings & integration with Kubernetes extension
 
@@ -20,7 +26,7 @@ This extension is a GUI wrapper compatible vith __VSCode__ and __Theia IDE__.
 
 ## Theia IDE
 
-1. From VSCode marketplace, download the package extension `.vsix` to your Theia `Plugins repository`
+1. From VSCode marketplace or GitHub release, download the package extension `.vsix` to your Theia `Plugins repository`
 2. Set your keyBinding
 3. That's all ;-)
 ![screencast](DemoTheia.gif)
