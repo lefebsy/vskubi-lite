@@ -10,7 +10,7 @@ All notable changes to the "vskubi-lite" extension will be documented in this fi
 ## 0.3.0
 
 - New shortcut feature :
-  - Changing kubi endpoint `[Ctrl+k Ctrl+d]` launch authentication then refresh Kubernetes 'explorer view'
+  - Changing kubi endpoint `[Ctrl+k Ctrl+d]` launch authentication then propose favorite namespaces and refresh Kubernetes `'explorer view'`
 
 ## 0.2.1
 

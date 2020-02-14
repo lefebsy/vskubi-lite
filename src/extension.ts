@@ -84,8 +84,15 @@ export function activate(context: vscode.ExtensionContext) {
         if (kubiNamespaceList) {
             let userFavsList = kubiNamespaceList.split(',');
             let updatedFavsList = await testFavoritesNS(userFavsList);
-            let msgHolder = (updatedFavsList.length === 0) ? 'Sorry no favorite namespace found' : 'Select new default namespace'; 
-            let newValue = await vscode.window.showQuickPick(updatedFavsList, { placeHolder: msgHolder });
+            let msgHolder = (updatedFavsList.length === 0) ? 'Sorry no favorite namespace found' : 'Select new default namespace';
+            let newValue;
+            // only one fav, do not need a pickup list, otherwise choose
+            if (updatedFavsList.length === 1) {
+                newValue = updatedFavsList[0];
+            }
+            else {
+                newValue = await vscode.window.showQuickPick(updatedFavsList, { placeHolder: msgHolder });
+            }           
             if (newValue) {
                 updateKubeConfigNamespace(newValue); //set new default namespace in kubeconfig
                 vscode.commands.executeCommand('extension.vsKubernetesRefreshExplorer'); // ask a refresh to extension kubernetes explorer view
