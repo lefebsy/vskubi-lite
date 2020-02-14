@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import * as child_process from "child_process";
-import * as kube_client from 'kubernetes-client';
+import * as k8s from '@kubernetes/client-node';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as home from 'user-home';
@@ -26,14 +26,13 @@ export function activate(context: vscode.ExtensionContext) {
         }).then((kubiPwd?: string) => {
             // entering pwd modalbox promise
 
-            if (!kubiPwd) {
-                return; // quit if no password entered
-            }
+            // quit if no password entered
+            if (!kubiPwd) { return; }
 
             // forging command to launch kubi
             let kubiCommand = `${kubiPath} --username ${kubiLogin} --password ${kubiPwd} --kubi-url ${kubiEndpoint} --${kubiAction} ${kubiExtra}`;
 
-            // spawning child processus (kubi itself)
+            // spawning child processus (kubi-cli itself)
             child_process.exec(kubiCommand, (err, stdout) => {
                 if (err) {
                     console.error(err);
@@ -52,8 +51,14 @@ export function activate(context: vscode.ExtensionContext) {
                         vscode.env.clipboard.writeText(stdout);
                     }
                     else {
-                        // ask a refresh to extension kubernetes explorer view
-                        vscode.commands.executeCommand('extension.vsKubernetesRefreshExplorer');
+                        // after a kubi generation the default namespace is always 'default', so if favorites are defined :switch
+                        if (vscode.workspace.getConfiguration('Kubi').get('favoriteNamespaces')) {
+                            vscode.commands.executeCommand('extension.vskubi-default-namespace-switch');
+                        }
+                        else {
+                            // even without favorite namespace, still usefull to refresh view 
+                            vscode.commands.executeCommand('extension.vsKubernetesRefreshExplorer'); // ask a refresh to extension kubernetes explorer view
+                        }
                     }
                 }
             });
@@ -146,41 +151,44 @@ function getDefaultKubeConfigPath(): string {
     return path.join(home, ".kube", "config");
 }
 
-// test each namespace retrieved from kube api server against user fovorites
+// Test each namespace retrieved from kube api server against user fovorites
 // partial match available : ['sys','pub'] will return ['kube-public','kube-system']
-async function testFavoritesNS(favs: string[]) {
-    // default return array
-    const matchingNamespaces: (string | string[])[] = [];
+function testFavoritesNS(favs: string[]): Promise<string[]> {
+    return new Promise<string[]>((resolve) => {
+        
+        // default return array
+        const matchingNamespaces: (string | string[])[] = [];
 
-    // load file kubeConfig and create a kube client
-    const config_path = getDefaultKubeConfigPath();
-    kube_client.config.loadKubeconfig(config_path);
-    const clientApi = kube_client.Client1_13;
-    const clientKube = new clientApi({ version: '1.13' });
+        // load file kubeConfig and create a kube client
+        const config_path = getDefaultKubeConfigPath();
+        const kc = new k8s.KubeConfig();
+        kc.loadFromFile(config_path);
+        const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
 
-    // get namespaces object from Kube api server
-    const nsResponse = await clientKube.api.v1.namespaces.get();
-    
-    // if kube say success, parse body items 'namespaces'
-    if (nsResponse.statusCode === 200) {
-        // only if some namespaces are returned
-        if (nsResponse.body.items.length > 0) {
-            // flatten and reduce response object to names only
-            let namespaces = nsResponse.body.items.flatMap((item: { metadata: { name: string; }; }) => item.metadata.name);
-            namespaces.forEach((ns: string | string[]) => {
-                // compare and store each namespace matching each user favorites, even partially (sys -> kube-system)
-                favs.forEach(fav => {
-                    if (ns.includes(fav)) {
-                        matchingNamespaces.push(ns);
-                    }
-                });
-            });
-            // sort and de-deduplicate results
-            matchingNamespaces.sort();
-            return <string[]>Array.from(new Set(matchingNamespaces));
-        }
-    }
-    return favs;
+        // get namespaces object from Kube api server
+        k8sApi.listNamespace().then((nsResponse) => {
+            // if kube say OK, parse body items 'namespaces'
+            if (nsResponse.response.statusCode === 200) {
+                // only if some namespaces are returned
+                if (nsResponse.body.items.length > 0) {
+                    // flatten and reduce response object to names only
+                    let namespaces = nsResponse.body.items.map((item) => item.metadata?.name);
+                    namespaces.forEach((ns) => {
+                        // compare and store each namespace matching each user favorites, even partially (sys -> kube-system)
+                        favs.forEach(fav => {
+                            if (ns?.includes(fav)) {
+                                matchingNamespaces.push(ns);
+                            }
+                        });
+                    });
+                    // sort and de-deduplicate results
+                    matchingNamespaces.sort();
+                    resolve(<string[]>Array.from(new Set(matchingNamespaces)));
+                    return;
+                }
+            }
+        });
+    });
 }
 
 export function deactivate() { }
