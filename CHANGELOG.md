@@ -2,6 +2,10 @@
 
 All notable changes to the "vskubi-lite" extension will be documented in this file.
 
+## 1.0.1
+
+- Fix TravisCI and bump some dependencies
+
 ## 1.0.0
 
 - New feature :
