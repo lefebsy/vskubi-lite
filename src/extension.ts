@@ -155,7 +155,7 @@ function getDefaultKubeConfigPath(): string {
         const files = process.env.KUBECONFIG.split(path.delimiter);
         return files[0];
     }
-    return path.join(home, ".kube", "config");
+    return path.join(require('os').homedir(), ".kube", "config");
 }
 
 // Test each namespace retrieved from kube api server against user fovorites
