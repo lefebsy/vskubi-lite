@@ -1,6 +1,6 @@
 {
 	"name": "vskubi-lite",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"displayName": "Kubi-lite",
 	"description": "Kubernetes CA-GIP/Kubi CLI, Lite wrapper version compatible with VSCode and Theia IDE",
 	"engines": {
@@ -159,10 +159,9 @@
 		"glob": "^7.1.6",
 		"js-yaml": "3.13.1",
 		"mocha": "^6.1.4",
-		"ts-loader": "^6.0.4",
-		"tslint": "^5.12.1",
-		"typescript": "^3.3.1",
-		"user-home": "^2.0.0",
+		"ts-loader": "^6.2.1",
+		"tslint": "^6.0.0",
+		"typescript": "^3.7.5",
 		"vsce": "^1.73.0",
 		"vscode-test": "^1.0.2",
 		"webpack": "^4.41.6",

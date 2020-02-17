@@ -3,7 +3,6 @@ import * as child_process from "child_process";
 import * as k8s from '@kubernetes/client-node';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as home from 'user-home';
 import * as yml from 'js-yaml';
 
 export function activate(context: vscode.ExtensionContext) {
@@ -72,8 +71,10 @@ export function activate(context: vscode.ExtensionContext) {
         if (kubiEndpointList) {
             let list = kubiEndpointList.split(',');
             let newValue = await vscode.window.showQuickPick(list, { placeHolder: 'Select the default kubi endpoint' });
-            vscode.workspace.getConfiguration('Kubi').update('endpoint-default', newValue);
-            vscode.commands.executeCommand('extension.vskubi-identity'); // ask to launch authentication function
+            if (newValue) {
+                vscode.workspace.getConfiguration('Kubi').update('endpoint-default', newValue);
+                vscode.commands.executeCommand('extension.vskubi-identity'); // ask to launch authentication function
+            }
         }
     });
 
@@ -117,7 +118,7 @@ function refreshStatusBar(kubiStatusChannel: vscode.StatusBarItem, endpoint: str
 // Write directly in the KubeConfig file a new default context namespace 
 function updateKubeConfigNamespace(ns: string | undefined): Promise<string> {
     return new Promise<string>((resolve, reject) => {
-        const config = getDefaultKubeConfigPath();
+        const config = path.join(require('os').homedir(), ".kube", "config").normalize();
         fs.readFile(config, { encoding: 'utf-8' }, (readErr, data) => {
             if (readErr) {
                 reject(readErr.message);
@@ -149,15 +150,6 @@ function updateKubeConfigNamespace(ns: string | undefined): Promise<string> {
     });
 }
 
-// Magicaly find kubeConfig, from $ENV or homedir 
-function getDefaultKubeConfigPath(): string {
-    if (process.env.KUBECONFIG && process.env.KUBECONFIG.length > 0) {
-        const files = process.env.KUBECONFIG.split(path.delimiter);
-        return files[0];
-    }
-    return path.join(home, ".kube", "config");
-}
-
 // Test each namespace retrieved from kube api server against user fovorites
 // partial match available : ['sys','pub'] will return ['kube-public','kube-system']
 function testFavoritesNS(favs: string[]): Promise<string[]> {
@@ -166,10 +158,9 @@ function testFavoritesNS(favs: string[]): Promise<string[]> {
         // default return array
         const matchingNamespaces: (string | string[])[] = [];
 
-        // load file kubeConfig and create a kube client
-        const config_path = getDefaultKubeConfigPath();
+        // load default kubeConfig (from home/.kube/config) and create a kube client
         const kc = new k8s.KubeConfig();
-        kc.loadFromFile(config_path);
+        kc.loadFromDefault();
         const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
 
         // get namespaces object from Kube api server
