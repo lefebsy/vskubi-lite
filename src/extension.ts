@@ -12,10 +12,10 @@ export function activate(context: vscode.ExtensionContext) {
     // Main function - Authentification against default kubi endpoint
     let identity = vscode.commands.registerCommand('extension.vskubi-identity', () => {
         const kubiPath = vscode.workspace.getConfiguration('Kubi').get('path');
-        const kubiEndpoint = vscode.workspace.getConfiguration('Kubi').get('endpoint-default');
         const kubiLogin = vscode.workspace.getConfiguration('Kubi').get('login');
         const kubiAction = vscode.workspace.getConfiguration('Kubi').get('action');
         const kubiExtra = vscode.workspace.getConfiguration('Kubi').get('extra');
+        let kubiEndpoint = vscode.workspace.getConfiguration('Kubi').get('endpoint-default');
 
         vscode.window.showInputBox({
             prompt: "Password ?",
@@ -30,11 +30,17 @@ export function activate(context: vscode.ExtensionContext) {
 
             // forging command to launch kubi
             let kubiCommand = `${kubiPath} --username ${kubiLogin} --password ${kubiPwd} --kubi-url ${kubiEndpoint} --${kubiAction} ${kubiExtra}`;
+            let kubiCommand4Debug = `${kubiPath} --username ${kubiLogin} --kubi-url ${kubiEndpoint} --${kubiAction} ${kubiExtra}`;
 
             // spawning child processus (kubi-cli itself)
             child_process.exec(kubiCommand, (err, stdout) => {
                 if (err) {
-                    console.error(err);
+                    kubiOutputChannel.appendLine('');
+                    kubiOutputChannel.appendLine(new Date().toLocaleString());
+                    kubiOutputChannel.appendLine('You can directly test your command in cli as generated here :');
+                    kubiOutputChannel.appendLine('\t' + kubiCommand4Debug);
+                    kubiOutputChannel.appendLine('Kubi error detected :');
+                    kubiOutputChannel.appendLine('\t' + `${kubiEndpoint} with ${kubiLogin} : ${stdout}`);
                     refreshStatusBar(kubiStatusChannel, `${kubiEndpoint} - failed`);
                     vscode.window.showErrorMessage(`${kubiLogin} : ${stdout} - Response from '${kubiEndpoint}'`);
                     return;
@@ -55,7 +61,8 @@ export function activate(context: vscode.ExtensionContext) {
                             vscode.commands.executeCommand('extension.vskubi-default-namespace-switch');
                         }
                         else {
-                            // even without favorite namespace, still usefull to refresh view 
+                            // even without favorite namespace, still usefull to refresh view
+                            vscode.commands.executeCommand('workbench.view.extension.kubernetesView'); // focus on kube view
                             vscode.commands.executeCommand('extension.vsKubernetesRefreshExplorer'); // ask a refresh to extension kubernetes explorer view
                         }
                     }
@@ -72,7 +79,7 @@ export function activate(context: vscode.ExtensionContext) {
             let list = kubiEndpointList.split(',');
             let newValue = await vscode.window.showQuickPick(list, { placeHolder: 'Select the default kubi endpoint' });
             if (newValue) {
-                vscode.workspace.getConfiguration('Kubi').update('endpoint-default', newValue);
+                await vscode.workspace.getConfiguration('Kubi').update('endpoint-default', newValue); //await instruction avoid to launch kubi-identity before the update is finished
                 vscode.commands.executeCommand('extension.vskubi-identity'); // ask to launch authentication function
             }
         }
@@ -95,7 +102,8 @@ export function activate(context: vscode.ExtensionContext) {
                 newValue = await vscode.window.showQuickPick(updatedFavsList, { placeHolder: msgHolder });
             }           
             if (newValue) {
-                updateKubeConfigNamespace(newValue); //set new default namespace in kubeconfig
+                await updateKubeConfigNamespace(newValue); //set new default namespace in kubeconfig
+                vscode.commands.executeCommand('workbench.view.extension.kubernetesView'); // focus on kube view
                 vscode.commands.executeCommand('extension.vsKubernetesRefreshExplorer'); // ask a refresh to extension kubernetes explorer view
             }
         }

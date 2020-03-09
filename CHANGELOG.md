@@ -2,6 +2,10 @@
 
 All notable changes to the "vskubi-lite" extension will be documented in this file.
 
+## 1.0.3
+
+- Fix logs and async promises
+
 ## 1.0.2
 
 - Fix stuffs for windows
