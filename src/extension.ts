@@ -4,25 +4,46 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as yml from 'js-yaml';
 
-export function activate(context: vscode.ExtensionContext) {
+export  function activate(context: vscode.ExtensionContext) {
     const kubiOutputChannel: vscode.OutputChannel = vscode.window.createOutputChannel('Kubi');
     const kubiStatusChannel: vscode.StatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
 
     // Main function - Authentification against default kubi endpoint
     let identity = vscode.commands.registerCommand('extension.vskubi-identity', () => {
-        const kubiPath = vscode.workspace.getConfiguration('Kubi').get('path');
-        const kubiLogin = vscode.workspace.getConfiguration('Kubi').get('login');
+        const kubiPath = vscode.workspace.getConfiguration('Kubi').get('path');      
         const kubiAction = vscode.workspace.getConfiguration('Kubi').get('action');
         const kubiExtra = vscode.workspace.getConfiguration('Kubi').get('extra');
+        const identityMapSaved:string = vscode.workspace.getConfiguration('Kubi').get('identityMap','{}');
+        let identityMap:Record<string, string> = JSON.parse(identityMapSaved);
+        let kubiLogin:string = vscode.workspace.getConfiguration('Kubi').get('login','');
         let kubiEndpoint = vscode.workspace.getConfiguration('Kubi').get('endpoint-default');
-        
+
+        // quick fail
+        if (kubiLogin.length === 0) {
+            vscode.window.showErrorMessage("Login setting not found");
+            return;
+        }
+
+        // if multiples logins...
+        let logins = kubiLogin.split(',');
+        if (logins.length > 1 && identityMap) {
+            if (identityMap[<any>kubiEndpoint]){
+                kubiLogin = identityMap[<any>kubiEndpoint];
+            }
+            else {
+                vscode.window.showWarningMessage('Please, select one of the logins for this cluster endpoint, then retry');
+                vscode.commands.executeCommand('extension.vskubi-identity-map');
+                return;
+            }
+        }
+
         vscode.window.showInputBox({
             prompt: "Password ?",
             placeHolder: "Please type your password",
             password: true,
             ignoreFocusOut: true,
         }).then((kubiPwd?: string) => {
-            // entering pwd modalbox promise
+            // pwd modalbox promise
 
             // quit if no password entered
             if (!kubiPwd) { return; }
@@ -70,6 +91,25 @@ export function activate(context: vscode.ExtensionContext) {
         });
     });
 
+    // Map logins to clusters
+    let identityMap = vscode.commands.registerCommand('extension.vskubi-identity-map', () => {
+
+        // retrieve user settings
+        const kubiEndpointList = <string>vscode.workspace.getConfiguration('Kubi').get('endpoint-list');
+        const kubiLogin: string = vscode.workspace.getConfiguration('Kubi').get('login','');
+        const identityMapSaved:string = vscode.workspace.getConfiguration('Kubi').get('identityMap','{}');
+        let identityMap:Record<string, string> = JSON.parse(identityMapSaved);
+        let logins = kubiLogin.split(',');
+        let clusters = kubiEndpointList.split(',');
+        
+        // quick fail
+        if (!kubiEndpointList) { return; }
+        if (logins.length === 1) { return; }
+        if (clusters.length === 1) { return; }
+        
+        identityMapChoice(clusters,logins,identityMap);
+    });
+
     // Retrieve in user settings a comma separated list of kubi-url to display a picking list.
     // Response is used as new default kubi endpoint in user kubi-lite extension settings
     let switchDefaultEndpoint = vscode.commands.registerCommand('extension.vskubi-default-endpoint-switch', async () => {
@@ -78,7 +118,7 @@ export function activate(context: vscode.ExtensionContext) {
             let list = kubiEndpointList.split(',');
             let newValue = await vscode.window.showQuickPick(list, { placeHolder: 'Select the default kubi endpoint' });
             if (newValue) {
-                await vscode.workspace.getConfiguration('Kubi').update('endpoint-default', newValue); //await instruction avoid to launch kubi-identity before the update is finished
+                await vscode.workspace.getConfiguration('Kubi').update('endpoint-default', newValue, vscode.ConfigurationTarget.Global); //await instruction avoid to launch kubi-identity before the update is finished
                 vscode.commands.executeCommand('extension.vskubi-identity'); // ask to launch authentication function
             }
         }
@@ -109,9 +149,27 @@ export function activate(context: vscode.ExtensionContext) {
     });
 
     context.subscriptions.push(identity);
+    context.subscriptions.push(identityMap);
     context.subscriptions.push(switchDefaultEndpoint);
     context.subscriptions.push(switchDefaultNamespace);
 
+}
+
+// Recursive fct
+function identityMapChoice(clusters: string[], logins: string[], identityMap: Record<string, string>|undefined) {
+    if (identityMap && logins.length>=1 && clusters.length>=1) {
+        let login = logins.pop();
+        vscode.window.showQuickPick( clusters, { canPickMany: true, placeHolder: `Select the cluster(s) to use with : ${login}` }).then(async (choice) => {
+            if (choice) {
+                choice.forEach(cluster => {
+                    identityMap[`${cluster}`] = `${login}`; // Map login for selected cluster(s)
+                });
+                await vscode.workspace.getConfiguration('Kubi').update('identityMap',JSON.stringify( identityMap), vscode.ConfigurationTarget.Global); // Persist mapping
+                clusters = clusters.filter( ( el ) => !choice.includes( el ) ); // Reduce cluster list before recursing for next login
+                identityMapChoice(clusters,logins,identityMap);
+            }
+        });
+    }
 }
 
 // Display kubi cluster endpoint in status bar after successful cnx
