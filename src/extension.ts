@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 import * as child_process from "child_process";
-import * as k8s from '@kubernetes/client-node';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as yml from 'js-yaml';
@@ -16,7 +15,7 @@ export function activate(context: vscode.ExtensionContext) {
         const kubiAction = vscode.workspace.getConfiguration('Kubi').get('action');
         const kubiExtra = vscode.workspace.getConfiguration('Kubi').get('extra');
         let kubiEndpoint = vscode.workspace.getConfiguration('Kubi').get('endpoint-default');
-
+        
         vscode.window.showInputBox({
             prompt: "Password ?",
             placeHolder: "Please type your password",
@@ -28,7 +27,7 @@ export function activate(context: vscode.ExtensionContext) {
             // quit if no password entered
             if (!kubiPwd) { return; }
 
-            // forging command to launch kubi
+            // forging command to launch kubi, and one dispayed without password for debug
             let kubiCommand = `${kubiPath} --username ${kubiLogin} --password ${kubiPwd} --kubi-url ${kubiEndpoint} --${kubiAction} ${kubiExtra}`;
             let kubiCommand4Debug = `${kubiPath} --username ${kubiLogin} --kubi-url ${kubiEndpoint} --${kubiAction} ${kubiExtra}`;
 
@@ -91,7 +90,7 @@ export function activate(context: vscode.ExtensionContext) {
         const kubiNamespaceList = <string>vscode.workspace.getConfiguration('Kubi').get('favoriteNamespaces');
         if (kubiNamespaceList) {
             let userFavsList = kubiNamespaceList.split(',');
-            let updatedFavsList = await testFavoritesNS(userFavsList);
+            let updatedFavsList = await testFavoritesNS(kubiOutputChannel, userFavsList);
             let msgHolder = (updatedFavsList.length === 0) ? 'Sorry no favorite namespace found' : 'Select new default namespace';
             let newValue;
             // only one fav, do not need a pickup list, otherwise choose
@@ -160,23 +159,86 @@ function updateKubeConfigNamespace(ns: string | undefined): Promise<string> {
 
 // Test each namespace retrieved from kube api server against user fovorites
 // partial match available : ['sys','pub'] will return ['kube-public','kube-system']
-function testFavoritesNS(favs: string[]): Promise<string[]> {
+function testFavoritesNS(kubiOutputChannel: vscode.OutputChannel, favs: string[]): Promise<string[]> {
+    return new Promise<string[]>((resolve) => {
+        // default return array
+        const matchingNamespaces: (string | string[])[] = [];       
+        // get kubectl form microsoft extension
+        const kubectlPath = vscode.workspace.getConfiguration('vs-kubernetes')['vs-kubernetes.kubectl-path'];
+        let cmd = `${kubectlPath} get ns -o json`;
+        // spawning child processus (kubi-cli itself)
+        child_process.exec(cmd, (err, stdout) => {
+            if (err) {
+                kubiOutputChannel.appendLine('');
+                kubiOutputChannel.appendLine(new Date().toLocaleString());
+                kubiOutputChannel.appendLine('You can directly test your command in cli as generated here :');
+                kubiOutputChannel.appendLine('\t' + cmd);
+                kubiOutputChannel.appendLine('Error detected :');
+                kubiOutputChannel.appendLine('\t' + `${kubectlPath} : ${stdout} ${err}`);
+                vscode.window.showErrorMessage(`${kubectlPath} : ${stdout} ${err}`);
+                return;
+            }
+            if (stdout) {
+                let response = JSON.parse(stdout);
+                // only if some namespaces are returned
+                if (response.items.length > 0) {
+                    // flattening and reducing response object to names only
+                    let namespaces = response.items.map((item: { metadata: { name: any; }; }) => item.metadata?.name);
+                    namespaces.forEach((ns: string | string[]) => {
+                        // compare and store each namespace matching each user favorites, even partially (sys -> kube-system)
+                        favs.forEach(fav => {
+                            if (ns?.includes(fav)) {
+                                matchingNamespaces.push(ns);
+                            }
+                        });
+                    });
+                    // sort and de-deduplicate results before resolving promise
+                    matchingNamespaces.sort();
+                    resolve(<string[]>Array.from(new Set(matchingNamespaces)));
+                    return;
+                }
+            }
+        });
+                
+         
+    });
+}
+
+/*
+import * as k8s from '@kubernetes/client-node';
+// Fct replaced by a kubectl call, because this client have a network bug on nodejs v10.x, do not working well in proxy enterprise world
+// Test each namespace retrieved from kube api server against user fovorites
+// partial match available : ['sys','pub'] will return ['kube-public','kube-system']
+function testFavoritesNSjsclient(kubiOutputChannel: vscode.OutputChannel, favs: string[]): Promise<string[]> {
     return new Promise<string[]>((resolve) => {
         
         // default return array
         const matchingNamespaces: (string | string[])[] = [];
+        kubiOutputChannel.appendLine('DEBUG - inside test ns');
 
         // load default kubeConfig (from home/.kube/config) and create a kube client
         const kc = new k8s.KubeConfig();
+        kubiOutputChannel.appendLine('DEBUG - new kubeconfig');
+
         kc.loadFromDefault();
+        kubiOutputChannel.appendLine('DEBUG - kubeconfig loaded');
+
+        
+        kubiOutputChannel.appendLine('DEBUG - create k8s client : ' + kc.clusters[0].name);
+        kubiOutputChannel.appendLine('DEBUG - create k8s client : ' + kc.users[0].name);
+
         const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
+        kubiOutputChannel.appendLine('DEBUG - created k8s client');
 
         // get namespaces object from Kube api server
         k8sApi.listNamespace().then((nsResponse) => {
+            kubiOutputChannel.appendLine('DEBUG - promise');
             // if kube say OK, parse body items 'namespaces'
             if (nsResponse.response.statusCode === 200) {
+                kubiOutputChannel.appendLine('DEBUG - NS found');
                 // only if some namespaces are returned
                 if (nsResponse.body.items.length > 0) {
+                    kubiOutputChannel.appendLine('DEBUG - NS >0');
                     // flatten and reduce response object to names only
                     let namespaces = nsResponse.body.items.map((item) => item.metadata?.name);
                     namespaces.forEach((ns) => {
@@ -189,12 +251,18 @@ function testFavoritesNS(favs: string[]): Promise<string[]> {
                     });
                     // sort and de-deduplicate results
                     matchingNamespaces.sort();
+                    kubiOutputChannel.appendLine('DEBUG - NS sorted');
                     resolve(<string[]>Array.from(new Set(matchingNamespaces)));
                     return;
                 }
             }
+            else {
+                kubiOutputChannel.appendLine('DEBUG - promise : ' + nsResponse.response.statusCode);
+            }
+            kubiOutputChannel.appendLine('DEBUG - NS not found');
         });
     });
 }
+*/
 
 export function deactivate() { }
