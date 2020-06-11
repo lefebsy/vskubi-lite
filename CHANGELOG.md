@@ -2,6 +2,11 @@
 
 All notable changes to the "vskubi-lite" extension will be documented in this file.
 
+## 1.1.0
+
+- New feature :
+  - Many logins support : when you need to use different login for different clusters `[Shift k + Shift i]`
+
 ## 1.0.4
 
 - Favorite namespaces : replace k8s client bugged with proxy by a kubectl call (using Microsoft Kunernetes path setting)
