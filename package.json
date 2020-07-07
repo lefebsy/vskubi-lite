@@ -165,7 +165,7 @@
 		"@types/node": "^10.12.21",
 		"@types/user-home": "^2.0.0",
 		"@types/vscode": "^1.41.0",
-		"electron": "8.1.0",
+		"electron": "8.2.4",
 		"glob": "^7.1.6",
 		"js-yaml": "3.13.1",
 		"minimist": ">=1.2.2",
