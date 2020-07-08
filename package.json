@@ -150,7 +150,7 @@
 	},
 	"scripts": {
 		"clean": "rm -rf ./out",
-		"vscode:prepublish": "npm i && webpack --mode production",
+		"vscode:prepublish": "npm audit fix && npm i && webpack --mode production",
 		"compile": "tsc -p ./",
 		"watch": "tsc -watch -p ./",
 		"pretest": "npm run compile",
