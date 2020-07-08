@@ -15,22 +15,20 @@ script: npm run package
 deploy:
   # publish vsix release in github
   - provider: releases
-    edge: true
     token:
       secure: js6GGPgV20SmcVg/IffhVPXayHo7aDDRzsJIeGo3ZOu0tfYIVHQhi9AdAX4Hurh7vuJ5+6Ti4XiTOpmkmR9PPPxRu21SrIUvCwm/IdYPoSsZRTK3G2T7JSq0xYhdOwIts9vdN2JFSAoJ7wQpH3bwqgHs7xwY9ZM3hak/Nrg/EGWB5/bA5o/k7EPFC3O4lT8wguNwKBE6yFtFgqJadkqK+xUNZcv+0+MaDnY0Q9pORzB+35TSEHwNaVELXGwPFN1BRJVDfMT3CQQcrn92KBx2t2wInxdg38SOnA111J6kmwANXBAc6EL5Z4oqwbDdxK4nZTINZ0ZT/a43YVRoy3IubOnt265hmzVvdm1MCjHt6jFuWo7CVicyY3o5CuSggdOak7kIao8rzMo82iI9KATY2JdRd7H3QE55nAPugqi9ApTc65oyhOyXaBKZlVdJ5mtcsWP1/Oj2ItaX/W/u/BQhvlzU+7VCcBhPQWQeAJNrMJnmzm9pO1mVS3CLj1iXB3kBwB4LrQNfr9QbyzkJadyeMUPfqgWvxVrDh9/yVp56vh5uhk81jZkijrDHa1IOVGTOKa4m8vo3xoKmjVXAa1KJ2k3kbvbImNfSNTWlE3p3QsP11GdxZkzYH/pDCc/dJjAtruXH/O8Pjo2tgBClUcG222Xb0vKYRb/bh/AnnygYJKs=
+    skip_cleanup: true
     file_glob: true
     file: "*.vsix"
-    cleanup: false
     on:
       repo: lefebsy/vskubi-lite
       tags: true
   # publish vsix release in vscode marketplace, token is valid 1 year 
   - provider: script
-    edge: true
     script: vsce publish --pat $MARKET_PERSONAL_ACCESS_TOKEN
+    skip_cleanup: true
     file_glob: true
     file: "*.vsix"
-    cleanup: false
     on:
       repo: lefebsy/vskubi-lite
       tags: true
