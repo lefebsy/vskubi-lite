@@ -27,7 +27,7 @@ deploy:
   # publish vsix release in vscode marketplace, token is valid 1 year 
   - provider: script
     edge: true
-    script: vsce publish -pat $MARKET_PERSONAL_ACCESS_TOKEN
+    script: vsce publish --pat $MARKET_PERSONAL_ACCESS_TOKEN
     file_glob: true
     file: "*.vsix"
     cleanup: false
