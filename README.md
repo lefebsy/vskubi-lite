@@ -6,17 +6,26 @@
 __Kubi CLI__ is provided by CA-GIP at <https://github.com/ca-gip/kubi>.
 This extension is a GUI wrapper compatible vith __VSCode__ and __Theia IDE__.
 
+## Release notes
+
+New features and modifications are available here : [CHANGELOG](CHANGELOG.md)
+
 ## Getting started
 
 1. Download __Kubi CLI__ and add it to your path, or set the absolute path in the __Kubi-lite__ settings
 2. Set preferences in VSCode settings
-3. Use `ctrl+k ctrl+i` to invoke the generation of the KubeConfig in your `$HOME`.
+3. Use `ctrl+k ctrl+i` to invoke generation of the __KubeConfig__ in your `$HOME`.
+4. Or use `ctrl+k ctrl+d` to switch to another default cluster endpoint
 
-## Bonus
+## Main features
 
-- Your list of favorite namespaces are checked, autocompleted and sorted from kube server api. Partial matches are available. Your fav list `"sys,pub"` will return `["kube-public","kube-system"]`.
-Then your kubernetes extension 'explorer view' is refreshed :-)
-- Easy switch between a kube cluster or another througth a simple list of kubi endpoint servers...  
+Read your kubiLite settings in VSCode to see explanations
+- __Multi clusters and logins support__
+- __Easy shortcuts__ : Switch between clusters, logins and namespaces with shortcuts
+- __Easy debugging__ : Kubi errors and generated commands are logged on kubiLite dedicated console channel without any password
+- __Favorite namespaces__
+  - Your list of favorite namespaces are checked, autocompleted and sorted from kube server api. Partial matches are available. Your fav list `"sys,pub"` will return `["kube-public","kube-system"]`. Then your kubernetes extension 'explorer view' is refreshed :-)
+  
 
 ## Visual settings & integration with Kubernetes extension
 

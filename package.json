@@ -1,6 +1,6 @@
 {
 	"name": "vskubi-lite",
-	"version": "1.1.1",
+	"version": "1.2.0",
 	"displayName": "Kubi-lite",
 	"description": "Kubernetes CA-GIP/Kubi CLI, Lite wrapper version compatible with VSCode and Theia IDE",
 	"engines": {
@@ -68,8 +68,8 @@
 			},
 			{
 				"command": "extension.vskubi-identity-map",
-				"key": "shift+k shift+i",
-				"mac": "shift+k shift+i"
+				"key": "ctrl+shift+k ctrl+shift+i",
+				"mac": "cmd+shift+k cmd+shift+i"
 			}
 		],
 		"configuration": {
@@ -127,7 +127,13 @@
 					"type": "string",
 					"scope": "resource",
 					"default": "{}",
-					"description": "[ shift+k shift+i ] Mapping clusters:logins, avoid Json editing, prefer function shortcut"
+					"description": "[ ctrl+shift+k ctrl+shift+i ] Mapping {cluster1:[login1]}, avoid Json editing, prefer function shortcut"
+				},
+				"Kubi.advancedMode": {
+					"type": "boolean",
+					"scope": "resource",
+					"default": "{}",
+					"description": "Allow to map many logins to the same cluster"
 				}
 			}
 		},
