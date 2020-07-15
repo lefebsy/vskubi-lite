@@ -2,6 +2,11 @@
 
 All notable changes to the "vskubi-lite" extension will be documented in this file.
 
+## 1.2.1
+
+- Fix defaulting value in settings
+- Fix UX : identityMapping behavior modified, there is usally more clusters than logins :-)
+
 ## 1.2.0
 
 - New feature : __Advanced mode__

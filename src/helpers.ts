@@ -44,20 +44,20 @@ export async function askLogin(kubiEndpoint: string): Promise<string | undefined
 // Recursive function to display pickinglist about logins mapped to clusters
 export function identityMapChoice(advancedMode: boolean, clusters: string[], logins: string[], identityMap: Record<string, Array<string>> | undefined) {
     if (identityMap && logins.length >= 1 && clusters.length >= 1) {
-        let cluster = clusters.shift(); //pick first cluster and remove it from the list
-        vscode.window.showQuickPick(logins, { canPickMany: true, placeHolder: `Select login(s) to use with : ${cluster}` }).then(async (choice) => {
+        let login = logins.shift(); //pick first login and remove it from the list
+        vscode.window.showQuickPick(clusters, { canPickMany: true, placeHolder: `Select cluster(s) to use with : ${login}` }).then(async (choice) => {
             if (choice) {
-                choice.forEach(login => {
+                choice.forEach(cluster => {
                     // need to initialyse with an empty array before pushing a login
                     if (!identityMap[`${cluster}`] || identityMap[`${cluster}`].length === 0) {
                         identityMap[`${cluster}`] = [];
                     }
                     identityMap[`${cluster}`].push(`${login}`);
+                    identityMap[`${cluster}`].sort();
                 });
-                identityMap[`${cluster}`].sort();
                 // Persist mapping
                 await vscode.workspace.getConfiguration('Kubi').update('identityMap', JSON.stringify(identityMap), vscode.ConfigurationTarget.Global);
-                // If not advanced mode, remove logins already selected before recursing to next cluster
+                // If not advanced mode, remove clusters already selected before recursing to next login
                 if (!advancedMode) {
                     logins = logins.filter((el) => !choice.includes(el));
                 }
