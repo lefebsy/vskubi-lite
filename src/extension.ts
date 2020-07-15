@@ -2,10 +2,26 @@ import * as vscode from 'vscode';
 import * as child_process from "child_process";
 import * as helpers from './helpers';
 
+import * as k8s from 'vscode-kubernetes-tools-api';
 
-export  function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
     const kubiOutputChannel: vscode.OutputChannel = vscode.window.createOutputChannel('Kubi');
     const kubiStatusChannel: vscode.StatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
+
+
+
+
+    // ALPHA Feature - extend the Azure extension 'Kubernetes Explorer' with NetPol and Cagip VaultSecrets 
+    const clusterExplorer = await k8s.extension.clusterExplorer.v1;
+    if (clusterExplorer.available) {
+        clusterExplorer.api.registerNodeContributor(
+            clusterExplorer.api.nodeSources.resourceFolder("Policy", "Policies", "NetworkPolicy", "netpol").at("Network")
+        );
+        clusterExplorer.api.registerNodeContributor(
+            clusterExplorer.api.nodeSources.resourceFolder("VaultSecret", "VaultSecrets", "VaultSecret", "VaultSecret").at("Configuration")
+        );            
+    }
+    
 
     // Main function - Authentification against default kubi endpoint
     let identity = vscode.commands.registerCommand('extension.vskubi-identity', () => {

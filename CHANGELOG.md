@@ -2,6 +2,11 @@
 
 All notable changes to the "vskubi-lite" extension will be documented in this file.
 
+## 1.3.0
+
+- New alpha feature : __Extend Kubernetes Explorer__
+  - Use [Azure Kubernetes Tools API](https://github.com/Azure/vscode-kubernetes-tools) to add resources `NetworkPolicy` and `Cagip VaultSecret` support in explorer GUI
+
 ## 1.2.1
 
 - Fix defaulting value in settings

@@ -59,7 +59,7 @@ export function identityMapChoice(advancedMode: boolean, clusters: string[], log
                 await vscode.workspace.getConfiguration('Kubi').update('identityMap', JSON.stringify(identityMap), vscode.ConfigurationTarget.Global);
                 // If not advanced mode, remove clusters already selected before recursing to next login
                 if (!advancedMode) {
-                    logins = logins.filter((el) => !choice.includes(el));
+                    clusters = clusters.filter((el) => !choice.includes(el));
                 }
                 identityMapChoice(advancedMode, clusters, logins, identityMap);
             }
