@@ -8,8 +8,8 @@ export async function activate(context: vscode.ExtensionContext) {
     const kubiOutputChannel: vscode.OutputChannel = vscode.window.createOutputChannel('Kubi');
     const kubiStatusChannel: vscode.StatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
 
-
-
+    // publish in open vsx registry for theia
+    // https://github.com/eclipse/openvsx/wiki/Publishing-Extensions
 
     // ALPHA Feature - extend the Azure extension 'Kubernetes Explorer' with NetPol and Cagip VaultSecrets 
     const clusterExplorer = await k8s.extension.clusterExplorer.v1;

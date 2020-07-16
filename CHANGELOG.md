@@ -2,6 +2,11 @@
 
 All notable changes to the "vskubi-lite" extension will be documented in this file.
 
+## 1.3.1
+
+- Publish Kubi-lite on Theia Open VSX registry https://open-vsx.org/extension/lefebsy/vskubi-lite
+- Update Travis CI to publish on OpenVSX registry
+
 ## 1.3.0
 
 - New alpha feature : __Extend Kubernetes Explorer__
