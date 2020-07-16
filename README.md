@@ -35,7 +35,7 @@ Read your kubiLite settings in VSCode to see explanations
 
 ## Theia IDE
 
-- On recent Theia instance, you can install Kubi-Lite directly from OpenVVX registry
+- On recent Theia instance, you can install Kubi-Lite directly from OpenVSX registry
 - For older Theia instance, you can follow the manual installation instructions below :
   1. From VSCode marketplace or GitHub release, download the package extension `.vsix` to your Theia `Plugins repository`
   2. Set your keyBinding
