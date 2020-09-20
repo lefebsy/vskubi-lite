@@ -2,6 +2,9 @@
 
 All notable changes to the "vskubi-lite" extension will be documented in this file.
 
+## 1.3.2
+- Fix CVE-2020-7720 and CVE-2020-7660
+
 ## 1.3.1
 
 - Publish Kubi-lite on Theia Open VSX registry https://open-vsx.org/extension/lefebsy/vskubi-lite
