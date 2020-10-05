@@ -361,7 +361,7 @@ export function matchKubifromKubeContext(clusterName: string): string {
     let cluster = clusterName.substring(clusterName.indexOf('_') + 1, clusterName.length); //remove context prefix 'login_'
     //find kubi endpoint matching current context cluster
     let filtered: string[] = endpoints.split(',').filter((value: string, index: number, array: string[]) => {
-        return (value.indexOf(cluster) > 0);
+        return (value.includes(cluster));
     });
     if (filtered.toString() === '') {
         vscode.window.showWarningMessage(`Not matching any endpoint of clusters list`);
