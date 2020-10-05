@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.com/lefebsy/vskubi-lite.svg?branch=master)](https://travis-ci.com/lefebsy/vskubi-lite)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=lefebsy_vskubi-lite&metric=alert_status)](https://sonarcloud.io/dashboard?id=lefebsy_vskubi-lite)
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/lefebsy/vskubi-lite)
+![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/lefebsy.vskubi-lite)
 
 __Kubi CLI__ is provided by CA-GIP at <https://github.com/ca-gip/kubi>.
 This extension is a GUI wrapper compatible vith __VSCode__ and __Theia IDE__.
