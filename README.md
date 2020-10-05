@@ -15,16 +15,28 @@ New features and modifications are available here : [CHANGELOG](CHANGELOG.md)
 1. Download __Kubi CLI__ and add it to your path, or set the absolute path in the __Kubi-lite__ settings
 2. Set preferences in VSCode settings
 3. Use `ctrl+k ctrl+i` to invoke generation of the __KubeConfig__ in your `$HOME`.
-4. Or use `ctrl+k ctrl+d` to switch to another default cluster endpoint
 
 ## Main features
 
-Read your kubiLite settings in VSCode to see explanations
-- __Multi clusters and logins support__
-- __Easy shortcuts__ : Switch between clusters, logins and namespaces with shortcuts
-- __Easy debugging__ : Kubi errors and generated commands are logged on kubiLite dedicated console channel without any password
-- __Favorite namespaces__
-  - Your list of favorite namespaces are checked, autocompleted and sorted from kube server api. Partial matches are available. Your fav list `"sys,pub"` will return `["kube-public","kube-system"]`. Then your kubernetes extension 'explorer view' is refreshed :-)
+![Features](DemoFeatures.png)
+
+- __Kubi Explain__ : Detailed information about token `[ctrl k + ctrl e]` - *(need Kubi >= v1.8.3)*
+- __Kubi Config__ : Authenticate :
+  - Identify on current cluster `[ctrl k + ctrl i]`
+  - Identify and set new default cluster `[ctrl k + ctrl d]`
+- __Multiple Config__ : Manage many clusters `[ctrl Shift k + ctrl Shift i]` - *(better with Kubi >= v1.8.3)*
+  - Multi clusters and logins support 
+  - Advanced mode to map many logins on same cluster
+
+- __Extend Microsoft Kubernetes explorer__ :
+  - Display resources : *S3Bucket, VaultSecret, NetworkPolicy, ServiceMonitor, ResourceQuota, HorizontalPodAutoscaler, PodDisruptionBudget*
+  - Right click menu on each cluster on sidePanel list to get a new token
+- __Favorites namespaces__
+  - Use favorites namespaces ! `[ctrl k + ctrl n]`
+    - Partial matches are available. `"sys,pub"` will return sorted expanded list `["kube-public","kube-system"]`.
+    - Kubernetes extension 'explorer view' is refreshed :-) 
+- __Log/Debug__ : Kubi commands and errors are logged on dedicated kubi channel
+
   
 
 ## Visual settings & integration with Kubernetes extension

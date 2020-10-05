@@ -1,6 +1,6 @@
 {
 	"name": "vskubi-lite",
-	"version": "1.3.2",
+	"version": "1.4.0",
 	"displayName": "Kubi-lite",
 	"description": "Kubernetes CA-GIP/Kubi CLI, Lite wrapper version compatible with VSCode and Theia IDE",
 	"engines": {
@@ -37,17 +37,27 @@
 			{
 				"category": "Kubi",
 				"command": "extension.vskubi-identity",
-				"title": "Execute default kubi action (kubeConfig or token)"
+				"title": "Identify Kubi - Current context"
 			},
 			{
 				"category": "Kubi",
-				"command": "extension.vskubi-default-endpoint-switch",
-				"title": "Select default kubi endpoint from your clusters list"
+				"command": "extension.vskubi-default-cluster",
+				"title": "Identify Kubi - New default cluster from list"
 			},
 			{
 				"category": "Kubi",
-				"command": "extension.vskubi-default-namespace-switch",
-				"title": "Change default namespace in kubeconfig from your favorite list"
+				"command": "extension.vskubi-set-namespace",
+				"title": "Namespace - Favorites list"
+			},
+			{
+				"category": "Kubi",
+				"command": "extension.vskubi-explain",
+				"title": "Explain Kubi - Info token"
+			},
+			{
+				"category": "Kubi",
+				"command": "extension.vskubi-id-map",
+				"title": "MapID - Associate logins to clusters"
 			}
 		],
 		"keybindings": [
@@ -57,83 +67,70 @@
 				"mac": "cmd+k cmd+i"
 			},
 			{
-				"command": "extension.vskubi-default-endpoint-switch",
+				"command": "extension.vskubi-default-cluster",
 				"key": "ctrl+k ctrl+d",
 				"mac": "cmd+k cmd+d"
 			},
 			{
-				"command": "extension.vskubi-default-namespace-switch",
+				"command": "extension.vskubi-set-namespace",
 				"key": "ctrl+k ctrl+n",
 				"mac": "cmd+k cmd+n"
 			},
 			{
-				"command": "extension.vskubi-identity-map",
+				"command": "extension.vskubi-id-map",
 				"key": "ctrl+shift+k ctrl+shift+i",
 				"mac": "cmd+shift+k cmd+shift+i"
+			},
+			{
+				"command": "extension.vskubi-explain",
+				"key": "ctrl+k ctrl+e",
+				"mac": "cmd+k cmd+e"
 			}
 		],
 		"configuration": {
 			"title": "Kubi-lite",
 			"properties": {
-				"Kubi.path": {
-					"type": "string",
-					"scope": "resource",
-					"default": "kubi",
-					"description": "Kubi exe path"
-				},
-				"Kubi.endpoint-default": {
-					"type": "string",
-					"default": "https://kubi.cluster1.example.com",
-					"description": "[ ctrl+k ctrl+i ] - Default kubi server endpoint, ex. : https://kubi.cluster1.example.com"
-				},
-				"Kubi.endpoint-list": {
-					"type": "string",
-					"scope": "resource",
-					"default": "",
-					"description": "[ ctrl+k ctrl+d ] - Optional - List of available endpoints (i.e. dev, prod...), comma separated, ex. : 'https://kubi.cluster2.example.com,https://kubi.cluster2.example.com'"
-				},
-				"Kubi.login": {
-					"type": "string",
-					"scope": "resource",
-					"default": "",
-					"description": "Login(s) ex. : me@foo.com or me@foo.com,myself@bar.com"
-				},
-				"Kubi.action": {
-					"type": "string",
-					"default": "generate-config",
-					"description": "Select kubi default action : kubeConfig or Token",
-					"enum": [
-						"generate-config",
-						"generate-token"
-					],
-					"enumDescriptions": [
-						"Generate a config in ~/.kube/config",
-						"Generate a token only & copy in clipboard"
-					]
-				},
-				"Kubi.extra": {
-					"type": "string",
-					"scope": "resource",
-					"default": "",
-					"description": "Custom string to play with parameters like '--use-proxy' or '--insecure'"
-				},
-				"Kubi.favoriteNamespaces": {
-					"type": "string",
-					"scope": "resource",
-					"default": "",
-					"description": "[ ctrl+k ctrl+n ] - Optional - List of your favorites namespaces, comma separated. Example 'sys,pub' will retrieve a sorted matching namespace list like 'kube-public,kube-system'"
-				},
-				"Kubi.identityMap": {
-					"type": "string",
-					"scope": "resource",
-					"default": "{}",
-					"description": "[ ctrl+shift+k ctrl+shift+i ] Mapping {cluster1:[login1]}, avoid Json editing, prefer function shortcut"
-				},
 				"Kubi.advancedMode": {
 					"type": "boolean",
 					"scope": "resource",
 					"default": false,
 					"description": "Allow to map many logins to the same cluster"
+				},
+				"Kubi.clusters": {
+					"type": "string",
+					"scope": "resource",
+					"default": "",
+					"description": "[ ctrl+k ctrl+d ] - List kubi endpoint's of one or many clusters (i.e. dev, prod...), comma separated, ex. : 'https://kubi.cluster1.dev.com,https://kubi.cluster2.prod.com'"
+				},
+				"Kubi.favoritesNamespaces": {
+					"type": "string",
+					"scope": "resource",
+					"default": "",
+					"description": "[ ctrl+k ctrl+n ] - Optional - List of your favorites namespaces, comma separated. Example 'sys,pub' will retrieve a sorted matching namespace list like 'kube-public,kube-system'"
+				},
+				"Kubi.logins": {
+					"type": "string",
+					"scope": "resource",
+					"default": "",
+					"description": "List of logins : 'me@foo.com' or 'me@foo.com,myself@bar.com'"
+				},
+				"Kubi.mapID": {
+					"type": "object",
+					"scope": "resource",
+					"default": "{}",
+					"description": "Avoid Json editing, instead use 'MapID function' shortcut[ ctrl+shift+k ctrl+shift+i ]"
+				},
+				"Kubi.parameters": {
+					"type": "string",
+					"scope": "resource",
+					"default": "",
+					"description": "Custom string to play with parameters like '--use-proxy' or '--insecure'"
+				},
+				"Kubi.path": {
+					"type": "string",
+					"scope": "resource",
+					"default": "kubi",
+					"description": "Kubi exe path"
 				}
 			}
 		},
@@ -160,32 +157,31 @@
 		"compile": "tsc -p ./",
 		"watch": "tsc -watch -p ./",
 		"pretest": "npm run compile",
-		"package": "npm run sonar && vsce package",
-		"sonar": "sh updateSonarProps.sh"
+		"package": "vsce package"
 	},
 	"devDependencies": {
-		"@kubernetes/client-node": "0.12.1",
-		"@types/glob": "^7.1.1",
-		"@types/js-yaml": "^3.12.2",
-		"@types/mocha": "^5.2.6",
-		"@types/node": "^10.12.21",
+		"@kubernetes/client-node": "0.12.2",
+		"@types/glob": "^7.1.3",
+		"@types/js-yaml": "^3.12.5",
+		"@types/mocha": "^8.0.3",
+		"@types/node": "^14.11.2",
 		"@types/user-home": "^2.0.0",
-		"@types/vscode": "^1.41.0",
-		"electron": "8.2.4",
-		"eslint": "^7.4.0",
+		"@types/vscode": "^1.49.0",
+		"electron": "10.1.3",
+		"eslint": "^7.10.0",
 		"glob": "^7.1.6",
-		"js-yaml": "3.13.1",
-		"minimist": ">=1.2.2",
+		"js-yaml": "3.14.0",
+		"minimist": ">=1.2.5",
 		"mocha": "^8.1.3",
 		"node-forge": ">=0.10.0",
-		"ovsx": "^0.1.0-next.dacd2fd",
-		"ts-loader": "^6.2.1",
-		"typescript": "^3.7.5",
-		"vsce": "^1.79.5",
-		"vscode-kubernetes-tools-api": "^1.0.0",
-		"vscode-test": "^1.3.0",
-		"webpack": "^4.43.0",
-		"webpack-cli": "^3.3.11",
-		"ws": "7.2.3"
+		"ovsx": "^0.1.0-next.e000fdb",
+		"ts-loader": "^8.0.4",
+		"typescript": "^4.0.3",
+		"vsce": "^1.81.1",
+		"vscode-kubernetes-tools-api": "^1.2.0",
+		"vscode-test": "^1.4.0",
+		"webpack": "^4.44.2",
+		"webpack-cli": "^3.3.12",
+		"ws": "7.3.1"
 	}
 }

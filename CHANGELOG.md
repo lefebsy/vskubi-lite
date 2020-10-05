@@ -2,6 +2,17 @@
 
 All notable changes to the "vskubi-lite" extension will be documented in this file.
 
+## 1.4.0
+- Cagip Kubi >= v1.8.3 compatible
+- New main features :
+  - __Kubi Explain__ : get detailed information about token `[ctrl k + ctrl e]` - *need Kubi >= v1.8.3*
+  - __Multiple Config__ : KubeConfig with many clusters - *need Kubi >= v1.8.3* 
+  - __Extend Kubernetes Explorer__ :
+    - Display resources : *S3Bucket, VaultSecret, NetworkPolicy, ServiceMonitor, ResourceQuota, HorizontalPodAutoscaler, PodDisruptionBudget*
+    - Right click menu on each cluster on sidePanel list to get a new token
+- Modifications :
+  - Refactoring settings and functions naming
+
 ## 1.3.2
 - Fix CVE-2020-7720 and CVE-2020-7660
 
@@ -38,7 +49,7 @@ All notable changes to the "vskubi-lite" extension will be documented in this fi
 
 ## 1.0.4
 
-- Favorite namespaces : replace k8s client bugged with proxy by a kubectl call (using Microsoft Kunernetes path setting)
+- Favorites namespaces : replace k8s client bugged with proxy by a kubectl call (using Microsoft Kunernetes path setting)
 
 ## 1.0.3
 
@@ -54,13 +65,13 @@ All notable changes to the "vskubi-lite" extension will be documented in this fi
 
 ## 1.0.0
 
-- New feature : __favorite namespaces__
-  - User favorite are checked, autocompleted and sorted from kube server api. Partial matches are available. Your fav list `"sys,pub"` will return `["kube-public","kube-system"]`
+- New feature : __favorites namespaces__
+  - User favorites are checked, autocompleted and sorted from kube server api. Partial matches are available. Your fav list `"sys,pub"` will return `["kube-public","kube-system"]`
 
 ## 0.3.0
 
 - New feature : __Shortcut Default Cluster__
-  - Changing kubi endpoint `[Ctrl+k Ctrl+d]`, launch authentication then propose favorite namespaces and refresh Kubernetes `'explorer view'`
+  - Changing kubi endpoint `[Ctrl+k Ctrl+d]`, launch authentication then propose favorites namespaces and refresh Kubernetes `'explorer view'`
 
 ## 0.2.1
 
@@ -69,7 +80,7 @@ All notable changes to the "vskubi-lite" extension will be documented in this fi
 ## 0.2.0
 
 - New feature :
-  - Display a list of favorite namespaces and easily refresh Kubernetes extention 'explorer view' `[Ctrl+k Ctrl+n]`
+  - Display a list of favorites namespaces and easily refresh Kubernetes extention 'explorer view' `[Ctrl+k Ctrl+n]`
 - Fix RegExp groups complexity to avoid CVE-2017-16021 and CVE-2018-13863
 
 ## 0.1.2
