@@ -1,3 +1,5 @@
+[![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/lefebsy/vskubi-lite)
+
 # __VSCode__ Kubi-Lite extension compatible with __Theia IDE__
 
 [![Build Status](https://travis-ci.com/lefebsy/vskubi-lite.svg?branch=master)](https://travis-ci.com/lefebsy/vskubi-lite)
