@@ -1,10 +1,9 @@
-[![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/lefebsy/vskubi-lite)
-
 # __VSCode__ Kubi-Lite extension compatible with __Theia IDE__
 
 [![Build Status](https://travis-ci.com/lefebsy/vskubi-lite.svg?branch=master)](https://travis-ci.com/lefebsy/vskubi-lite)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/lefebsy/vskubi-lite)
 ![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/lefebsy.vskubi-lite)
+[![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/lefebsy/vskubi-lite)
 
 __Kubi CLI__ is provided by CA-GIP at <https://github.com/ca-gip/kubi>.
 This extension is a GUI wrapper compatible vith __VSCode__ and __Theia IDE__.
