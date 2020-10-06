@@ -243,7 +243,7 @@ export async function upgradeExtentionSettings(state: LocalStorageService) {
             await vscode.workspace.getConfiguration('Kubi').update('favoritesNamespaces', favorites, vscode.ConfigurationTarget.Global);
         }
         // extra -> parameters
-        let extra = vscode.workspace.getConfiguration('Kubi').get('extra');
+        let extra = vscode.workspace.getConfiguration('Kubi').get('extraParameters');
         if (extra){
             await vscode.workspace.getConfiguration('Kubi').update('parameters', extra, vscode.ConfigurationTarget.Global);
         }
@@ -254,6 +254,14 @@ export async function upgradeExtentionSettings(state: LocalStorageService) {
         }
         
         state.setValue<string>('versionSettings', '1.4.0');
+    }
+    if (versionSettings==='1.4.0') {
+        // extra -> parameters
+        let extra = vscode.workspace.getConfiguration('Kubi').get('extraParameters');
+        if (extra){
+            await vscode.workspace.getConfiguration('Kubi').update('parameters', extra, vscode.ConfigurationTarget.Global);
+        }        
+        state.setValue<string>('versionSettings', '1.4.1');
     }
 }
 

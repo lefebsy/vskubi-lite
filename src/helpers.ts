@@ -219,7 +219,7 @@ export function testFavoritesNS(kubiOutputChannel: vscode.OutputChannel, favs: s
 export function kubiForge(kubiLogin: string, kubiPwd: string, kubiEndpoint: string, kubiOutputChannel: vscode.OutputChannel): Promise<string> {
     return new Promise<string>((resolve) => {
         const kubiPath: string = vscode.workspace.getConfiguration('Kubi').get('path', '');
-        const kubiExtra: string = vscode.workspace.getConfiguration('Kubi').get('extraParameters', '');
+        const kubiExtra: string = vscode.workspace.getConfiguration('Kubi').get('parameters', '');
         kubiVersion().then((version) => {
             let kubiCommand4Debug;
             if (version === 'firstgen') {
@@ -361,7 +361,7 @@ export function matchKubifromKubeContext(clusterName: string): string {
     let cluster = clusterName.substring(clusterName.indexOf('_') + 1, clusterName.length); //remove context prefix 'login_'
     //find kubi endpoint matching current context cluster
     let filtered: string[] = endpoints.split(',').filter((value: string, index: number, array: string[]) => {
-        return (value.includes(cluster));
+        return (value.indexOf(cluster) > 0);
     });
     if (filtered.toString() === '') {
         vscode.window.showWarningMessage(`Not matching any endpoint of clusters list`);
