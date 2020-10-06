@@ -1,7 +1,6 @@
 # __VSCode__ Kubi-Lite extension compatible with __Theia IDE__
 
 [![Build Status](https://travis-ci.com/lefebsy/vskubi-lite.svg?branch=master)](https://travis-ci.com/lefebsy/vskubi-lite)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=lefebsy_vskubi-lite&metric=alert_status)](https://sonarcloud.io/dashboard?id=lefebsy_vskubi-lite)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/lefebsy/vskubi-lite)
 ![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/lefebsy.vskubi-lite)
 

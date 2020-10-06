@@ -128,13 +128,13 @@ export function updateKubeConfigNamespace(ns: string | undefined): Promise<strin
             })?.[1];
 
 
-            let contexts = Object.entries(doc).find((value, index, obj) => {
+            let contexts = <[string|any]>Object.entries(doc).find((value, index, obj) => {
                 return (value[0] ==='contexts');
-            });
+            })?.[1];
 
             let theContext = contexts?.find((value, index, obj) => {
-                return (value[0]?.name === currentContextName);
-            })?.[0];
+                return (value?.name === currentContextName);
+            });
             
 
             // set the wanted namespace value in the current context
@@ -361,7 +361,7 @@ export function matchKubifromKubeContext(clusterName: string): string {
     let cluster = clusterName.substring(clusterName.indexOf('_') + 1, clusterName.length); //remove context prefix 'login_'
     //find kubi endpoint matching current context cluster
     let filtered: string[] = endpoints.split(',').filter((value: string, index: number, array: string[]) => {
-        return (value.indexOf(cluster) > 0);
+        return (value.includes(cluster));
     });
     if (filtered.toString() === '') {
         vscode.window.showWarningMessage(`Not matching any endpoint of clusters list`);
