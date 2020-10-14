@@ -10,7 +10,7 @@ import * as yml from 'js-yaml';
  * @param kubiEndpoint kubi endpoint value
  */
 export async function askLogin(kubiEndpoint: string): Promise<string | undefined> {
-    const identityMap: Record<string, Array<string>> = vscode.workspace.getConfiguration('Kubi').get('identityMap', JSON.parse('{}'));
+    const identityMap: Record<string, Array<string>> = vscode.workspace.getConfiguration('Kubi').get('mapID', JSON.parse('{}'));
     const kubiLogin: string = vscode.workspace.getConfiguration('Kubi').get('logins', '');
 
     // if no login defined at all in settings, quick fail
@@ -64,7 +64,7 @@ export function identityMapChoice(clusters: string[], logins: string[], identity
                     identityMap[`${cluster}`].sort();
                 });
                 // Persist mapping
-                await vscode.workspace.getConfiguration('Kubi').update('identityMap', identityMap, vscode.ConfigurationTarget.Global);
+                await vscode.workspace.getConfiguration('Kubi').update('mapID', identityMap, vscode.ConfigurationTarget.Global);
                 // If not advanced mode, remove clusters already selected before recursing to next login
                 if (!advancedMode) {
                     clusters = clusters.filter((el) => !choice.includes(el));
