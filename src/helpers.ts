@@ -180,26 +180,26 @@ export function testFavoritesNS(kubiOutputChannel: vscode.OutputChannel, favs: s
                 vscode.window.showErrorMessage(`${kubectlPath} : ${stdout} ${err}`, 'logs').then((val) => {
                     if (val === 'logs') { kubiOutputChannel.show(); }
                 });
-                return;
             }
-            if (stdout) {
-                let response = JSON.parse(stdout);
-                // only if some namespaces are returned
-                if (response.items.length > 0) {
-                    // flattening and reducing response object to names only
-                    let namespaces = response.items.map((item: { metadata: { name: any; }; }) => item.metadata?.name);
-                    namespaces.forEach((ns: string | string[]) => {
-                        // compare and store each namespace matching each user favorites, even partially (sys -> kube-system)
-                        favs.forEach(fav => {
-                            if (ns?.includes(fav)) {
-                                matchingNamespaces.push(ns);
-                            }
+            else {
+                if (stdout) {
+                    let response = JSON.parse(stdout);
+                    // only if some namespaces are returned
+                    if (response.items.length > 0) {
+                        // flattening and reducing response object to names only
+                        let namespaces = response.items.map((item: { metadata: { name: any; }; }) => item.metadata?.name);
+                        namespaces.forEach((ns: string | string[]) => {
+                            // compare and store each namespace matching each user favorites, even partially (sys -> kube-system)
+                            favs.forEach(fav => {
+                                if (ns?.includes(fav)) {
+                                    matchingNamespaces.push(ns);
+                                }
+                            });
                         });
-                    });
-                    // sort and de-deduplicate results before resolving promise
-                    matchingNamespaces.sort();
-                    resolve(<string[]>Array.from(new Set(matchingNamespaces)));
-                    return;
+                        // sort and de-deduplicate results before resolving promise
+                        matchingNamespaces.sort();
+                        resolve(<string[]>Array.from(new Set(matchingNamespaces)));
+                    }
                 }
             }
         });
