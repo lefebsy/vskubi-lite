@@ -193,23 +193,24 @@ export function authenticate(kubiEndpoint:string) {
                         vscode.window.showErrorMessage(`${kubiLogin} : ${stdout} - Response from '${kubiEndpoint}'`, 'logs').then( (val)=>{
                             if (val==='logs') { kubiOutputChannel.show(); }
                         });
-                        return;
                     }
-                    if (stdout) {
-                        vscode.window.showInformationMessage(stdout);
-                        helpers.refreshStatusBar(kubiStatusChannel, `${kubiEndpoint}`);                            
-                        // kube config updated by kubi, need to set context to newly refreshed cluster config
-                        helpers.setKubeContext(kubiOutputChannel,kubiLogin,kubiEndpoint).finally( ()=>{
-                            // after a kubi generation the default namespace is always 'default', so if favorites are defined :switch
-                            if (vscode.workspace.getConfiguration('Kubi').get('favoritesNamespaces')) {
-                                vscode.commands.executeCommand('extension.vskubi-set-namespace');
-                            }
-                            else {
-                                // even without favorites namespace, still usefull to refresh view
-                                vscode.commands.executeCommand('workbench.view.extension.kubernetesView'); // focus on kube view
-                                vscode.commands.executeCommand('extension.vsKubernetesRefreshExplorer'); // ask a refresh to extension kubernetes explorer view
-                            }
-                        });
+                    else {
+                        if (stdout) {
+                            vscode.window.showInformationMessage(stdout);
+                            helpers.refreshStatusBar(kubiStatusChannel, `${kubiEndpoint}`);                            
+                            // kube config updated by kubi, need to set context to newly refreshed cluster config
+                            helpers.setKubeContext(kubiOutputChannel,kubiLogin,kubiEndpoint).finally( ()=>{
+                                // after a kubi generation the default namespace is always 'default', so if favorites are defined :switch
+                                if (vscode.workspace.getConfiguration('Kubi').get('favoritesNamespaces')) {
+                                    vscode.commands.executeCommand('extension.vskubi-set-namespace');
+                                }
+                                else {
+                                    // even without favorites namespace, still usefull to refresh view
+                                    vscode.commands.executeCommand('workbench.view.extension.kubernetesView'); // focus on kube view
+                                    vscode.commands.executeCommand('extension.vsKubernetesRefreshExplorer'); // ask a refresh to extension kubernetes explorer view
+                                }
+                            });
+                        }
                     }
                 });
             }));
