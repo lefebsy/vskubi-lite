@@ -12,7 +12,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
     //Initialize the global application state manager
     const state = new LocalStorageService(context.globalState);
-    //state.setValue<string>('versionSettings', 'old');
+    
     upgradeExtentionSettings(state);
 
     // Extend the Azure extension 'Kubernetes Explorer' with NetPol and Cagip VaultSecrets and some others

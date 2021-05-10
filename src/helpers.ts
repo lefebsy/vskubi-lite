@@ -39,7 +39,7 @@ export async function askLogin(kubiEndpoint: string): Promise<string | undefined
     }
 
     // logins are defined for the cluster, let human select one
-    return await vscode.window.showQuickPick(identityMap[<any>kubiEndpoint], { placeHolder: 'Select your login' });
+    return vscode.window.showQuickPick(identityMap[<any>kubiEndpoint], { placeHolder: 'Select your login' });
 
 }
 
@@ -147,7 +147,6 @@ export function updateKubeConfigNamespace(ns: string | undefined): Promise<void>
                     return;
                 }
                 resolve();
-                return;
             });
 
         });
@@ -255,7 +254,6 @@ export function kubiVersion(): Promise<string> {
             }
             if (stdout) {
                 resolve('nextgen');
-                return;
             }
         });
     });
@@ -293,7 +291,6 @@ export function setKubeContext(kubiOutputChannel: vscode.OutputChannel, login: s
             }
             if (stdout) {
                 resolve(true);
-                return;
             }
         });
     });
