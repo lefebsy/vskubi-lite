@@ -155,9 +155,10 @@
 		"clean": "rm -rf ./out",
 		"vscode:prepublish": "npm audit fix && npm i && webpack --mode production",
 		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
+		"watch": "npm run sonarcloud-version && tsc -watch -p ./",
+		"sonarcloud-version": "echo -n sonar.projectVersion=\"$(jq -r '.version' package.json)\" > .sonarcloud.properties",
 		"pretest": "npm run compile",
-		"package": "vsce package"
+		"package": "npm run sonarcloud-version && vsce package"
 	},
 	"devDependencies": {
 		"@kubernetes/client-node": "0.12.2",
