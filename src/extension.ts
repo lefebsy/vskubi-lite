@@ -265,4 +265,6 @@ export async function upgradeExtentionSettings(state: LocalStorageService) {
     }
 }
 
-export function deactivate() { }
+export function deactivate() {
+    // This is intentional override function, please Sonar, be kind
+}
