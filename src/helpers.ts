@@ -102,8 +102,8 @@ export function kctl(): string {
  * Write directly in the KubeConfig file a new default context namespace
  * @param ns namespace name
  */
-export function updateKubeConfigNamespace(ns: string | undefined): Promise<string> {
-    return new Promise<string>((resolve, reject) => {
+export function updateKubeConfigNamespace(ns: string | undefined): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
         const config = path.join(require('os').homedir(), ".kube", "config").normalize();
         fs.readFile(config, { encoding: 'utf-8' }, (readErr, data) => {
             if (readErr) {

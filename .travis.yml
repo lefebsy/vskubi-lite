@@ -34,7 +34,7 @@ deploy:
       tags: true
   # publish vsix release in open vsx registry for Theia : https://open-vsx.org/extension/lefebsy/vskubi-lite 
   - provider: script
-    script: npx ovsx publish ./*.vsix --pat $OPEN_MARKET_PERSONAL_ACCESS_TOKEN
+    script: npm install --global ovsx && npx ovsx publish ./*.vsix --pat $OPEN_MARKET_PERSONAL_ACCESS_TOKEN
     skip_cleanup: true
     file_glob: true
     file: "*.vsix"
