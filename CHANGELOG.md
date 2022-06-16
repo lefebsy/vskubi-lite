@@ -2,6 +2,12 @@
 
 All notable changes to the "vskubi-lite" extension will be documented in this file.
 
+## 1.4.7
+- Fix security
+
+## 1.4.6
+- Fix security
+
 ## 1.4.5
 - Fix security
 
