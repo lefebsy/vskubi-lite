@@ -1,43 +1,35 @@
-# blocklist
 branches:
   except:
-  - /^untagged/
-
+  - "/^untagged/"
 language: node_js
 os:
-  - "linux"
-
+- linux
 node_js:
-  - 16
-
+- 16
 script: npm run package
-
 deploy:
-  # publish vsix release in github
-  - provider: releases
-    token:
-      secure: js6GGPgV20SmcVg/IffhVPXayHo7aDDRzsJIeGo3ZOu0tfYIVHQhi9AdAX4Hurh7vuJ5+6Ti4XiTOpmkmR9PPPxRu21SrIUvCwm/IdYPoSsZRTK3G2T7JSq0xYhdOwIts9vdN2JFSAoJ7wQpH3bwqgHs7xwY9ZM3hak/Nrg/EGWB5/bA5o/k7EPFC3O4lT8wguNwKBE6yFtFgqJadkqK+xUNZcv+0+MaDnY0Q9pORzB+35TSEHwNaVELXGwPFN1BRJVDfMT3CQQcrn92KBx2t2wInxdg38SOnA111J6kmwANXBAc6EL5Z4oqwbDdxK4nZTINZ0ZT/a43YVRoy3IubOnt265hmzVvdm1MCjHt6jFuWo7CVicyY3o5CuSggdOak7kIao8rzMo82iI9KATY2JdRd7H3QE55nAPugqi9ApTc65oyhOyXaBKZlVdJ5mtcsWP1/Oj2ItaX/W/u/BQhvlzU+7VCcBhPQWQeAJNrMJnmzm9pO1mVS3CLj1iXB3kBwB4LrQNfr9QbyzkJadyeMUPfqgWvxVrDh9/yVp56vh5uhk81jZkijrDHa1IOVGTOKa4m8vo3xoKmjVXAa1KJ2k3kbvbImNfSNTWlE3p3QsP11GdxZkzYH/pDCc/dJjAtruXH/O8Pjo2tgBClUcG222Xb0vKYRb/bh/AnnygYJKs=
-    skip_cleanup: true
-    file_glob: true
-    file: "*.vsix"
-    on:
-      repo: lefebsy/vskubi-lite
-      tags: true
-  # publish vsix release in vscode marketplace, token is valid 1 year, renew in dev.azure.com
-  - provider: script
-    script: vsce publish --pat $MARKET_PERSONAL_ACCESS_TOKEN
-    skip_cleanup: true
-    file_glob: true
-    file: "*.vsix"
-    on:
-      repo: lefebsy/vskubi-lite
-      tags: true
-  # publish vsix release in open vsx registry for Theia : https://open-vsx.org/extension/lefebsy/vskubi-lite 
-  - provider: script
-    script: npm install --global ovsx && npx ovsx publish ./*.vsix --pat $OPEN_MARKET_PERSONAL_ACCESS_TOKEN
-    skip_cleanup: true
-    file_glob: true
-    file: "*.vsix"
-    on:
-      repo: lefebsy/vskubi-lite
-      tags: true
+- provider: releases
+  token:
+    secure: FJ9W8s2sT+71IOkyWBbkmXjq0qc0l9S+/G227dKqEq4sdaNhU3kAhH5LBZdB87KQ+kpnVtDAbQN3+eMunycSah1/o1Ld0FSAIJGZGRm1d2rpYxbmiw3kvQFjzEUE/4yMVLtfTwYNNOXTN037KEIsJTvBBCZ2yKfizGfQkIQU4GsXi6m705uSl1LmlhslsxtWrlmTZLGo5TFkkEYFUwcSpNxtKOV7nXAvGFeFm08sRi7Bsl2Cw5DUrgzKD/WPdhTEZBUaWQ+LWQ2rgW25cNxhafOjqt1/sJcuqbs3W4OzOYU2wuWG/NAEeGwk1Pr5FGZHnREYExaSYqLY7wKiDbdZT10ni4IBkuG2nMmsAi7kgLE+u2gxQhy3CMgvUbYUZuOFCygnmnO5MkjXOEDUIQqF+FTkF4tvJGsBudDvMjGWsyW4LLZMk6KW98P/0Bt81T1OMRKsYsfaCfWcfSFbJwiY54r0CdyNv18/0qNi8Zf7I/DGF9SSyg5sG89xQQ53SyCgwWVVpP8UMBNFXQqpuFI+WY0zINrwTbf1OOEPACgOpwESaEFO/JjTxFoGfHY6r199e2tzYeQQzw3EpLFvhMZODbB7o5p5rSzt0VdbP38YgDYspg4bjJNWXntSNjKeuGMhzsEWS1xWxxa0cdZJPeBa8CAPAGNfWeE4NWwULz4oN8Y=
+  skip_cleanup: true
+  file_glob: true
+  file: "*.vsix"
+  on:
+    repo: lefebsy/vskubi-lite
+    tags: true
+- provider: script
+  script: vsce publish --pat $MARKET_PERSONAL_ACCESS_TOKEN
+  skip_cleanup: true
+  file_glob: true
+  file: "*.vsix"
+  on:
+    repo: lefebsy/vskubi-lite
+    tags: true
+- provider: script
+  script: npm install --global ovsx && npx ovsx publish ./*.vsix --pat $OPEN_MARKET_PERSONAL_ACCESS_TOKEN
+  skip_cleanup: true
+  file_glob: true
+  file: "*.vsix"
+  on:
+    repo: lefebsy/vskubi-lite
+    tags: true
