@@ -91,12 +91,13 @@ export function refreshStatusBar(kubiStatusChannel: vscode.StatusBarItem, endpoi
  * Get Kubectl path from vsKubernetes settings
  */
 export function kctl(): string {
-    const kubectlPath = vscode.workspace.getConfiguration('vs-kubernetes')['vs-kubernetes.kubectl-path'];
-    const kubectlPathLinux = vscode.workspace.getConfiguration('vs-kubernetes')['vs-kubernetes.kubectl-path.linux'];
-    const kubectlPathWindows = vscode.workspace.getConfiguration('vs-kubernetes')['vs-kubernetes.kubectl-path.windows'];
-    return kubectlPath || kubectlPathLinux || kubectlPathWindows;
-}
+    let kubectlPath = vscode.workspace.getConfiguration('vscode-kubernetes')['kubectl-path'];
 
+    // old way kubernetes extension storing settings
+    let legacy_kubectlPath = vscode.workspace.getConfiguration('vs-kubernetes')['vs-kubernetes.kubectl-path'];
+
+    return kubectlPath || legacy_kubectlPath || 'kubectl path not found, set it in kubernetes extension please';
+}
 
 /**
  * Write directly in the KubeConfig file a new default context namespace

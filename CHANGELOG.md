@@ -2,6 +2,9 @@
 
 All notable changes to the "vskubi-lite" extension will be documented in this file.
 
+## 1.4.8
+- Fix kubectl path for latest kubernetes exenstion versions
+
 ## 1.4.7
 - Fix security
 
