@@ -14,6 +14,7 @@ deploy:
   file: "*.vsix"
   on:
     repo: lefebsy/vskubi-lite
+    tags: true
   skip_cleanup: 'true'
 - provider: script
   script: vsce publish --pat $MARKET_PERSONAL_ACCESS_TOKEN
@@ -31,6 +32,3 @@ deploy:
   on:
     repo: lefebsy/vskubi-lite
     tags: true
-env:
-  global:
-    secure: q41/wU0+kdhzLRW+uQpse/gdicVQuWaR6jGUKf8PvXDuIeRHqQNJnh40xa9LIEy5nVJyw7EHMfwtt3RfRE6nnlj6mGVh6rBrazczdaynslNfFAU0jfeAXZcjIFCHZAF1am7z3lCrPShuh03W9bzArzYkb+Nvqlq8ZaiDxbdtDW11P4KgMcOsnJ/mCyWCIi8IBCKjYOs5y68MBoHGsEqloGsYkcwtfa3NIsbY+dCIUI+N3FHr6KceIiXxD5UEqFCX6lHsw2aH3M9RDZ1C+/HqCH7hkzJQwdaEHcwteSKUt5LO5OcDW8Jqsu+hmaNBDKptYEYcwRcR8qRrQ5SBSTypzroCGKabAmHQDDpPA/I9isUEUfW9ZowP6eBmTa76GNe2fyHQ/ZoOCqFX8dCFPIUzKaq7xSHoLWzfK6R6BM15coeJLi0VvyQig1BVlJU5L/ZbAYk9tmyKNyQjXKm/h7pndlPwJ8O3RPwL9QmxzgMKuXiLhGxXuyaVIyMzunDa4Cw+cDiWzDJU3KHuek0FGhU9+u3bL9ay1NGdTmSHwn7RLoLZHD2LGgmDCUhShkLfrN0UUP/72x9WC5Ujg9BUp32i1zZLSgU00/MA6UjyAdwjS6JpSW/GtFyYzZll1dYCNEK4XRyUSbHRW3dRPsUTyE38AAl9vIS0hvxPXmOAEhdz4nU=
