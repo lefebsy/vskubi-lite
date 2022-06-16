@@ -8,14 +8,18 @@ node_js:
 - 16
 script: npm run package
 deploy:
+# publish vsix release in github, renew token encrypted : travis setup releases --com --force -g $NEW_TOKEN
 - provider: releases
   api_key:
-    secure: "YRkXHwEKEgnCTGDhUb8QWdmLAoC+ua9+mUcvI/w4f+m8U4aGeMyALOv3SJ1GlegdcS7nJLXMpP/q63LAM0256+3J4lBMp0VlDWqWXlsDaSzCe7LXyVRCau4ECzKMm/3biVomyJCu4D9kqd2N0dLgN82lDimJoyPwNC7+/EAepYKHs+RIk1cn+uLTgjRr3OV+mR0SsV0roGT853fdtOGQr6jfyPBu1088Kx4OHzel1lyDuWeze7RRG68kfiRtJPrgnTBABMBbOQzZqiUmFIwApWs4uUtsKtrMk8IXjaFJNo8LK3h3ehJhiS5KfurBXkYuwjGJtd9kCAVqsd8pBoegPSWuLSeiHrOWiQ9Z9q8ypifV/rV+vkJk6OZSVP2TJF5Q29xcUL0w5ctnrdJeJ3NUUu6PZ1JPBP9W8+tT6Na2HvmZu0rhkqfDn1w7LP7e8i9NwBnjlfUZvM9EQc0SwUaSHC7/cG0VTiG7IL1UuuVhqfKIhXO5r4hBj08UcIcX5wWgVMIboDCRAk2/rxo0fFfmNjQBkjgOAxFRp6nBcHa3IXZGiOX+W9SHUBi8WoYS/p17+lIArW5jaAT0K/qr1Ugf/GC6JwVY3yt1eTi8+10uul5rUcy+iP2wqmJJk59zl1RfaC8CJnGARldTUjBLc/xZ3fR3WPPRLtO1UZNCHIfRB8Q="
-  skip_cleanup: 'true'
+    secure: eRce0PjaxgS2a2mWogNaDNFP2nJ7wiN3kz8DS0MwQ9SPXiDwBB1kJquXHRFrzk/Da/2kyqSKtxsssUO3TPliU5HgjlT8WANLPgLt2pgHBPUbOZqcND+xMH8puugowuLkaOE60CMu/Oz+c/ZryR12BfoEYluVDBrRL8CJ5ttxg+MZtDer4JF3tQpByGkthVEQ3KKKkFjSI/AqYXBfLxcBIe7KI65gs1nf8zcDJEY4kz2VP9Kw/i0EvwymExcYLq3ayS8TS+SfPZivyiJpkxH8IbCzbNUMiWPYuB3p7ow11Kv5bcUvEDoxmZwgh+nVVavK0I8VZ3tET6BpvKZ2j1ItFKpwiQPdX1N7JP0T0MfE98PfB3AIG318z09jMTZ3vbj6Ly/KO4LnMdYehzrAOglinqQ0GS/ehUMKsGKPh3vQMZHKzb3xaPwyAP0+PMQuZfcl+IU3YBBTB/nbEHf8pXJdFN/yX3QHayQ3+F7Ehy5GcAFhtlCmUS9RFb9CZ8gbjHMyHaHh87w+ImzHChla4OSN8dl7rV9GLZmqC3864+bYonXta6QhKDyE36bolS1VUTe8bh/4Ji+Ic+ofMYJDQH9U436ynynsAjNFhmTqyzeffOhXIO7UdhQCB7GHOQc1zDG5HJlLsA8E5ViL6DcWNuqEDEInd20hW+jPFXltKbepyMg=
   file: "*.vsix"
+  skip_cleanup: 'true'
+  file_glob: true
+  draft: true
   on:
     repo: lefebsy/vskubi-lite
     tags: true
+# publish vsix release in vscode marketplace, token is valid 1 year, renew in dev.azure.com    
 - provider: script
   script: vsce publish --pat $MARKET_PERSONAL_ACCESS_TOKEN
   skip_cleanup: true
@@ -24,6 +28,7 @@ deploy:
   on:
     repo: lefebsy/vskubi-lite
     tags: true
+# publish vsix release in open vsx registry for Theia : https://open-vsx.org/extension/lefebsy/vskubi-lite 
 - provider: script
   script: npm install --global ovsx && npx ovsx publish ./*.vsix --pat $OPEN_MARKET_PERSONAL_ACCESS_TOKEN
   skip_cleanup: true
@@ -32,3 +37,4 @@ deploy:
   on:
     repo: lefebsy/vskubi-lite
     tags: true
+  
