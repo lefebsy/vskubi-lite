@@ -33,7 +33,7 @@ jobs:
       with:
         files: '*.vsix'
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        release-tag: $GITHUB_REF
+        release-tag: ${{ github.ref_name }}
 
 
     - name: Marketplace
