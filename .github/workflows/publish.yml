@@ -22,7 +22,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Build
+    - name: Package
       run: |
         npm install
         npm run package
@@ -30,5 +30,4 @@ jobs:
     - name: Marketplace
       run: |
         ls *.vsix
-        ls -lisah
         vsce publish --pat $MARKET_PERSONAL_ACCESS_TOKEN
