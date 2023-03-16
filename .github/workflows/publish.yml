@@ -22,16 +22,13 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Download a Build Artifact
-      uses: actions/download-artifact@v2.1.1
-      with:
-        name: vsix
-        path: .
+    - name: Build
+      run: |
+        npm install
+        npm run package
 
     - name: Marketplace
       run: |
-        npm install
-        ls *.zip
         ls *.vsix
         ls -lisah
         vsce publish --pat $MARKET_PERSONAL_ACCESS_TOKEN
