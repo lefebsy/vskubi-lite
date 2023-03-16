@@ -28,6 +28,8 @@ jobs:
         npm run package
 
     - name: Marketplace
+      env:
+        MARKET_PERSONAL_ACCESS_TOKEN: ${{ secrets.MARKET_PERSONAL_ACCESS_TOKEN }}
       run: |
         ls *.vsix
         npm install -g @vscode/vsce
