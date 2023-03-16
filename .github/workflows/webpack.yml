@@ -28,12 +28,11 @@ jobs:
         npx webpack
         npm run package
 
----
-- name: Upload Build Artifact
-  uses: actions/upload-artifact@v3.1.2
-  with:
-    name: vsix
-    path: ./*.vsix
-Available Options:
-    if-no-files-found: warn
-    retention-days: 1
+
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v3.1.2
+      with:
+        name: vsix
+        path: ./*.vsix
+        if-no-files-found: warn
+        retention-days: 1
