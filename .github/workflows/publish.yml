@@ -27,6 +27,14 @@ jobs:
         npm install
         npm run package
 
+
+    - name: Release
+      uses: AButler/upload-release-assets@v2.0
+      with:
+        files: '*.vsix'
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+
     - name: Marketplace
       env:
         MARKET_PERSONAL_ACCESS_TOKEN: ${{ secrets.MARKET_PERSONAL_ACCESS_TOKEN }}
