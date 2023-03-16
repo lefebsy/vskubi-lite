@@ -30,4 +30,5 @@ jobs:
     - name: Marketplace
       run: |
         ls *.vsix
+        npm install -g @vscode/vsce
         vsce publish --pat $MARKET_PERSONAL_ACCESS_TOKEN
