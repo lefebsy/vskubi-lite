@@ -176,10 +176,10 @@ export function testFavoritesNS(kubiOutputChannel: vscode.OutputChannel, favs: s
 
         // get kubectl form microsoft kubernetes extension
         const kubectlPath = kctl();
-        //let cmd = `${kubectlPath} get ns -o json`;
-        let cmd = `${kubectlPath} get ns --no-headers -o custom-columns=":metadata.name"`;
         // spawning child processus (kubi-cli itself)
-        child_process.exec(cmd, (err, stdout) => {
+        //let cmd = `${kubectlPath} get ns --no-headers -o custom-columns=":metadata.name"`;
+        //child_process.exec(cmd, (err, stdout) => {
+        child_process.execFile(kubectlPath, ['get','ns','--no-headers','-o','custom-columns=:metadata.name'],(err, stdout) => {
             if (err) {
                 kubiOutputChannel.appendLine('');
                 kubiOutputChannel.appendLine(new Date().toLocaleString());
@@ -286,7 +286,8 @@ export function setKubeContext(kubiOutputChannel: vscode.OutputChannel, login: s
         let cmd = `${kubectlPath} config use-context ${contextName}`;
 
         // spawning child processus (kubi-cli itself)
-        child_process.exec(cmd, (err, stdout) => {
+        child_process.execFile(kubectlPath, ['config','use-context'], (err, stdout) => {
+        //child_process.exec(cmd, (err, stdout) => {
             if (err) {
                 kubiOutputChannel.appendLine('');
                 kubiOutputChannel.appendLine(new Date().toLocaleString());
