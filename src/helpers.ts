@@ -184,7 +184,7 @@ export function testFavoritesNS(kubiOutputChannel: vscode.OutputChannel, favs: s
                 kubiOutputChannel.appendLine('');
                 kubiOutputChannel.appendLine(new Date().toLocaleString());
                 kubiOutputChannel.appendLine('Command generated :');
-                kubiOutputChannel.appendLine('\t' + cmd);
+                kubiOutputChannel.appendLine('\t' + `${kubectlPath} get ns --no-headers -o custom-columns=":metadata.name"`);
                 kubiOutputChannel.appendLine('Error detected :');
                 kubiOutputChannel.appendLine('\t' + `${kubectlPath} : ${stdout} ${err}`);
                 vscode.window.showErrorMessage(`${kubectlPath} : ${stdout} ${err}`, 'logs').then((val) => {
