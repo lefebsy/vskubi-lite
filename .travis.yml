@@ -5,7 +5,7 @@ language: node_js
 os:
 - linux
 node_js:
-- 16
+- 20
 script: npm run package
 deploy:
 # publish vsix release in github, renew token encrypted : travis setup releases --com --force -g $NEW_TOKEN
