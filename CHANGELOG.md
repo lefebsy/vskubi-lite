@@ -2,6 +2,14 @@
 
 All notable changes to the "vskubi-lite" extension will be documented in this file.
 
+
+## 1.4.12
+- Upgrade compatibility VScode ^1.89.0
+
+## 1.4.11
+- Bump versions
+- Optimize favorite namespaces method
+
 ## 1.4.10
 - Fix security
 
