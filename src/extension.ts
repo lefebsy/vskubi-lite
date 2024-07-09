@@ -94,28 +94,29 @@ export async function activate(context: vscode.ExtensionContext) {
     });
 
 
+
     /**
      * Map logins to clusters
      */
     let identityMap = vscode.commands.registerCommand('extension.vskubi-id-map', async () => {
         // retrieve user settings
-        const kubiEndpointList = <string>vscode.workspace.getConfiguration('Kubi').get('clusters');
-        const kubiLogin = <string>vscode.workspace.getConfiguration('Kubi').get('logins','');
+        const kubiEndpointList = helpers.getConfiguration('clusters');
+        const kubiLogin = helpers.getConfiguration('logins');
         let logins = kubiLogin.split(',');
         let clusters = kubiEndpointList.split(',');
         
         // quick fail
-        if (!kubiEndpointList) { return; }
-        if (clusters.length === 1) { return; }
-        if (logins.length === 1) { return; }
-        helpers.identityMapChoice(clusters,logins,JSON.parse('{}'));
+        if (!kubiEndpointList || clusters.length === 1 || logins.length === 1) { 
+            return; 
+        }
+        helpers.identityMapChoice(clusters, logins, JSON.parse('{}'));
     });
 
     /**
      * Retrieve in user settings a comma separated list of kubi-url cluster to display a picking list.
      */
     let defaultCluster = vscode.commands.registerCommand('extension.vskubi-default-cluster', async () => {
-        const kubiEndpointList = <string>vscode.workspace.getConfiguration('Kubi').get('clusters');
+        const kubiEndpointList = helpers.getConfiguration('clusters');
         if (kubiEndpointList) {
             let list = kubiEndpointList.split(',');
             let kubiEndpoint = await vscode.window.showQuickPick(list, { placeHolder: 'Select the default cluster' });
@@ -129,7 +130,7 @@ export async function activate(context: vscode.ExtensionContext) {
      * Retrieve in user settings a comma separated list of favorites namespaces to display a picking list.
      */
     let switchDefaultNamespace = vscode.commands.registerCommand('extension.vskubi-set-namespace', async () => {
-        const kubiNamespaceList = <string>vscode.workspace.getConfiguration('Kubi').get('favoritesNamespaces');
+        const kubiNamespaceList = helpers.getConfiguration('favoritesNamespaces');
         if (kubiNamespaceList) {
             let userFavsList = kubiNamespaceList.split(',');
             let updatedFavsList = await helpers.testFavoritesNS(kubiOutputChannel, userFavsList);
@@ -229,27 +230,27 @@ export async function upgradeExtentionSettings(state: LocalStorageService) {
     if (versionSettings==='old') {
 
         // login -> logins
-        let login = vscode.workspace.getConfiguration('Kubi').get('login');
+        let login = helpers.getConfiguration('login');
         if (login){
             await vscode.workspace.getConfiguration('Kubi').update('logins', login, vscode.ConfigurationTarget.Global);
         }
         // endpoint-list -> clusters
-        let endpointList = vscode.workspace.getConfiguration('Kubi').get('endpoint-list');
+        let endpointList = helpers.getConfiguration('endpoint-list');
         if (endpointList){
             await vscode.workspace.getConfiguration('Kubi').update('clusters', endpointList, vscode.ConfigurationTarget.Global);
         }
         // favoriteNamespaces -> favoritesNamespaces
-        let favorites = vscode.workspace.getConfiguration('Kubi').get('favoriteNamespaces');
+        let favorites = helpers.getConfiguration('favoriteNamespaces');
         if (favorites){
             await vscode.workspace.getConfiguration('Kubi').update('favoritesNamespaces', favorites, vscode.ConfigurationTarget.Global);
         }
         // extra -> parameters
-        let extra = vscode.workspace.getConfiguration('Kubi').get('extraParameters');
+        let extra = helpers.getConfiguration('extraParameters');
         if (extra){
             await vscode.workspace.getConfiguration('Kubi').update('parameters', extra, vscode.ConfigurationTarget.Global);
         }
         // identityMap:string -> mapID:object
-        let imap:string = vscode.workspace.getConfiguration('Kubi').get('identityMap','{}');
+        let imap:string = helpers.getConfiguration('identityMap','{}');
         if (imap){
             await vscode.workspace.getConfiguration('Kubi').update('mapID', JSON.parse(imap), vscode.ConfigurationTarget.Global);
         }
@@ -258,7 +259,7 @@ export async function upgradeExtentionSettings(state: LocalStorageService) {
     }
     if (versionSettings==='1.4.0') {
         // extra -> parameters
-        let extra = vscode.workspace.getConfiguration('Kubi').get('extraParameters');
+        let extra = helpers.getConfiguration('extraParameters');
         if (extra){
             await vscode.workspace.getConfiguration('Kubi').update('parameters', extra, vscode.ConfigurationTarget.Global);
         }        

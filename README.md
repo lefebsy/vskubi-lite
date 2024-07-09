@@ -6,7 +6,7 @@
 [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/lefebsy/vskubi-lite)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=lefebsy_vskubi-lite&metric=alert_status)](https://sonarcloud.io/dashboard?id=lefebsy_vskubi-lite)
 
-__Kubi CLI__ is provided by CA-GIP at <https://github.com/ca-gip/kubi>.
+__Kubi CLI__ is provided by CA-GIP at <https://github.com/ca-gip/kubi-cli>.
 This extension is a GUI wrapper compatible vith __VSCode__ and __Theia IDE__.
 
 ## Release notes
@@ -60,4 +60,4 @@ New features and modifications are available here : [CHANGELOG](CHANGELOG.md)
 ## License
 
 - The code is licensed under the [MIT license](http://choosealicense.com/licenses/mit/). See [LICENSE](LICENSE).
-- Logo is CA-GIP/Kubi logo : <https://github.com/ca-gip/kubi>
+- Logo is CA-GIP/Kubi logo : <https://github.com/ca-gip/kubi-cli>

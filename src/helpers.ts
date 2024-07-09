@@ -6,6 +6,14 @@ import * as yml from 'js-yaml';
 
 
 /**
+ * Get configuration value
+ * @param key Configuration key
+ */
+export function getConfiguration(key: string,defaultValue?:any) {
+    return <string>vscode.workspace.getConfiguration('Kubi').get(key, defaultValue);
+}
+
+/**
  * Retrieve login from settings or ask user from mapped ones
  * @param kubiEndpoint kubi endpoint value
  */
@@ -168,7 +176,8 @@ export function testFavoritesNS(kubiOutputChannel: vscode.OutputChannel, favs: s
 
         // get kubectl form microsoft kubernetes extension
         const kubectlPath = kctl();
-        let cmd = `${kubectlPath} get ns -o json`;
+        //let cmd = `${kubectlPath} get ns -o json`;
+        let cmd = `${kubectlPath} get ns --no-headers -o custom-columns=":metadata.name"`;
         // spawning child processus (kubi-cli itself)
         child_process.exec(cmd, (err, stdout) => {
             if (err) {
@@ -184,11 +193,11 @@ export function testFavoritesNS(kubiOutputChannel: vscode.OutputChannel, favs: s
             }
             else {
                 if (stdout) {
-                    let response = JSON.parse(stdout);
+
                     // only if some namespaces are returned
-                    if (response.items.length > 0) {
+                    if (stdout.length > 0) {
                         // flattening and reducing response object to names only
-                        let namespaces = response.items.map((item: { metadata: { name: any; }; }) => item.metadata?.name);
+                        let namespaces =  stdout.split("\n");
                         namespaces.forEach((ns: string | string[]) => {
                             // compare and store each namespace matching each user favorites, even partially (sys -> kube-system)
                             favs.forEach(fav => {
