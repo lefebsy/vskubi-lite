@@ -36,10 +36,19 @@ jobs:
         release-tag: ${{ github.ref_name }}
 
 
-    - name: Marketplace
+    - name: Marketplace Microsoft
       env:
         MARKET_PERSONAL_ACCESS_TOKEN: ${{ secrets.MARKET_PERSONAL_ACCESS_TOKEN }}
       run: |
         ls *.vsix
         npm install -g @vscode/vsce
         vsce publish --pat $MARKET_PERSONAL_ACCESS_TOKEN
+
+    - name: Marketplace Open VSX
+      env:
+        OPEN_MARKET_PERSONAL_ACCESS_TOKEN: ${{ secrets.OPEN_MARKET_PERSONAL_ACCESS_TOKEN }}
+      run: |
+        ls *.vsix
+        npm install --global ovsx
+        npx ovsx publish ./*.vsix --pat $OPEN_MARKET_PERSONAL_ACCESS_TOKEN
+  
