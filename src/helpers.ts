@@ -254,8 +254,8 @@ export function kubiForge(kubiLogin: string, kubiPwd: string, kubiEndpoint: stri
 export function kubiVersion(): Promise<string> {
     return new Promise<string>((resolve) => {
         const kubiPath = vscode.workspace.getConfiguration('Kubi').get('path');
-        let v: string;
-        child_process.exec(`${kubiPath} version`, (err, stdout) => {
+        //child_process.exec(`${kubiPath} version`, (err, stdout) => {
+        child_process.execFile( kubiPath as string, ['version'],(err, stdout) => {
             if (err) {
                 //FirstGeneration kubi without version command
                 resolve('firstgen');
@@ -287,7 +287,6 @@ export function setKubeContext(kubiOutputChannel: vscode.OutputChannel, login: s
 
         // spawning child processus (kubi-cli itself)
         child_process.execFile(kubectlPath, ['config','use-context'], (err, stdout) => {
-        //child_process.exec(cmd, (err, stdout) => {
             if (err) {
                 kubiOutputChannel.appendLine('');
                 kubiOutputChannel.appendLine(new Date().toLocaleString());
@@ -319,7 +318,6 @@ export function setKubeContext(kubiOutputChannel: vscode.OutputChannel, login: s
 export function getKubifromKubeContext(kubiOutputChannel: vscode.OutputChannel, fromClick?: string): Promise<string> {
     return new Promise<string>((resolve, reject) => {
         const kubectlPath = kctl();
-        let cmd = `${kubectlPath} config current-context`;
 
         if (fromClick) {
             let clicked = matchKubifromKubeContext(fromClick);
@@ -332,11 +330,11 @@ export function getKubifromKubeContext(kubiOutputChannel: vscode.OutputChannel, 
         }
         else {
             // spawning child processus (kubi-cli itself)
-            child_process.exec(cmd, (err, stdout) => {
+            child_process.execFile(kubectlPath, ['config','current-context'],(err, stdout) => {
                 if (err) {
                     kubiOutputChannel.appendLine('');
                     kubiOutputChannel.appendLine(new Date().toLocaleString());
-                    kubiOutputChannel.appendLine('\t' + cmd);
+                    kubiOutputChannel.appendLine('\t' + `${kubectlPath} config current-context`);
                     kubiOutputChannel.appendLine('Error detected :');
                     kubiOutputChannel.appendLine('\t' + `${kubectlPath} : ${err.message}`);
                     vscode.window.showErrorMessage(`${kubectlPath} : ${err.message}`, 'logs').then((val) => {
