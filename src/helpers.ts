@@ -121,7 +121,7 @@ export function updateKubeConfigNamespace(ns: string | undefined): Promise<void>
             }
 
             // load and parse yaml kubeConfig file data
-            const doc: object = <object>yml.safeLoad(data);
+            const doc: object = <object>yml.load(data);
             if (!doc) {
                 reject(`${config} is not a valid yaml file`);
                 return;
@@ -150,7 +150,7 @@ export function updateKubeConfigNamespace(ns: string | undefined): Promise<void>
             theContext.context.namespace = ns;
 
             // write changes to file
-            fs.writeFile(config, yml.safeDump(doc), (writeErr) => {
+            fs.writeFile(config, yml.dump(doc), (writeErr) => {
                 if (writeErr) {
                     reject(`couldn't update ${config}: ${writeErr.message}`);
                     return;
@@ -253,9 +253,8 @@ export function kubiForge(kubiLogin: string, kubiPwd: string, kubiEndpoint: stri
  */
 export function kubiVersion(): Promise<string> {
     return new Promise<string>((resolve) => {
-        const kubiPath = vscode.workspace.getConfiguration('Kubi').get('path');
-        //child_process.exec(`${kubiPath} version`, (err, stdout) => {
-        child_process.execFile( kubiPath as string, ['version'],(err, stdout) => {
+        const kubiPath = vscode.workspace.getConfiguration('Kubi').get('path') as string;
+        child_process.execFile( kubiPath, ['version'],(err, stdout) => {
             if (err) {
                 //FirstGeneration kubi without version command
                 resolve('firstgen');
