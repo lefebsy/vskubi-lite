@@ -285,7 +285,7 @@ export function setKubeContext(kubiOutputChannel: vscode.OutputChannel, login: s
         let cmd = `${kubectlPath} config use-context ${contextName}`;
 
         // spawning child processus (kubi-cli itself)
-        child_process.execFile(kubectlPath, ['config','use-context'], (err, stdout) => {
+        child_process.execFile(kubectlPath, ['config','use-context', contextName], (err, stdout) => {
             if (err) {
                 kubiOutputChannel.appendLine('');
                 kubiOutputChannel.appendLine(new Date().toLocaleString());

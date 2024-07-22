@@ -2,6 +2,9 @@
 
 All notable changes to the "vskubi-lite" extension will be documented in this file.
 
+## 1.4.13
+- Fix bug
+
 
 ## 1.4.13
 - Fix code bug : Yaml lib methode modified unoticed. Solved :-)
